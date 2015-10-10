@@ -26,6 +26,8 @@ The dnaml executable from PHYLIP must be copied to the directory containing the 
 
 On Linux (but not on Windows), an X server is required to render the phylogenetic trees. Please see the notes on installing an X server <a href="http://pythonhosted.org/ete2/tutorial/tutorial_webplugin.html">here</a>, if ETE reports that it cannot connect to the X server. If necessary, you can provide a standalone X server such as xdm, as suggested in the ETE documentation <a href="http://pythonhosted.org/ete2/tutorial/tutorial_webplugin.html">here</a>. In this case, you will also need to configure the DISPLAY environment variable to point to the X server: set DISPLAY=localhost:0.0
 
+To create logo plots, both Berkley Weblogo and Ghostscript must be installed, and the seqlogo script must be runnable from the directory containing the analysis toolset.
+
 ## Usage ##
 
     python AnnotateTreeCmd.py seqnumfile seqfile treefile cdrfile tag wd
@@ -35,31 +37,33 @@ Argument|Meaning
 `seqnumfile`|A file defining the sequence numbering (see 'File Formats' below).
 `seqfile`|A FASTA file containing the nucleotide sequences to be analysed. Sequences must all have the same length and must represent a whole number of valid codons. Whole-codon gaps (represented by ---) are allowed. The number of sequences must match the number of labelled nodes in the treefile (see below) and the FASTA labels must identically match the treefile's node labels. The first sequence in the file must represent the root. In the case of antibody sequences, this would normally be the germline, which may if necessary be inferred using the companion script [RevertToGermline](RevertToGermline.md).
 |`treefile`|The input tree, in Newick format. The pipeline will root the tree on the first node listed in `seqfile`: the tree as supplied therefore does not need to be rooted.
-|`cdrfile`|A file listing the locations of the CDRs (see 'File Formats' below)
-|`tag`|A string which will be prepended to the filename of each output file produced by the script. The output files otherwise have fixed file names, listed below.
+|`cdrfile`|A file listing the locations of the CDRs (see 'File Formats' below). The file may be empty if no CDR analysis is required.
+|`tag`|A string which will be prepended to the filename of each output file produced by the script. The output files have fixed file names, listed below.
 |`wd`|The relative or absolute pathaname of the working directory that the pipeline should use. This directory must exist at the time the script is called. Output files and working files will be created in this directory. You are recommended to use a separate working directory for each analysis, so that working files for each analysis can be examined. Please note that, on the command line, pathnames to other files (seqfile, treefile etc.) must be specified relative to the directory in which the script is run, not relative to the working directory.  
 
 ## Output Files ##
 
+Output file names are prepended with the `tag` specified on the command line.
+
 Filename|Contents
 --------|--------
-tag_aa_alignment.fa:|AA translation of input sequences and inferred ancestral intermediates, in FASTA format.|
-tag_aa_alignment.txt:|AA translation of input sequences and inferred ancestral intermediates, in pretty print format.
-tag_nt_alignment.fa:|The input nt sequences and inferred ancestral intermediates, in FASTA format.
-tag_annotated_treefile.new:|The input tree, in Newick format, annotated with AA transitions. The transitions are provided as node labels.
-tag_annotated_treefile.png:|The above tree, rendered in .png format.
-tag_annotated_treefile.svg:|The above tree, rendered in .svg format.
-tag_annotated_treefile_tot.new:|The input tree, in Newick format, annotated with the number of AA transitions in each branch.
-tag_annotated_treefile_tot.png:|The above tree, rendered in .png format.
-tag_annotated_treefile_tot.svg:|The above tree, rendered in .svg format.
-tag_annotated_treefile_sum.new:|The input tree, in Newick format, annotated with a summary of transitions in each FR and CDR*.
-tag_annotated_treefile_sum.png:|The above tree, rendered in .png format*.
-tag_annotated_treefile_sum.svg:|The above tree, rendered in .svg format*.
-tag_cdr_analysis.html:|The CDR analysis, as an HTML table*.
-tag_intermediates_treefile.new:|The input tree, in Newick format, with intermediate nodes labelled. The main purpose of this tree is to indicate the relative position of each inferred ancestral intermediate in the tree.
-tag_intermediates_treefile.png:|The intermediate tree, rendered in .png format.
-tag_intermediates_treefile.svg:|The intermediate tree, rendered in .svg format.
-tag_aa_logo.png:|A logo frequency plot of the AA translation of all input sequences EXCEPT the first (root) sequence (the root sequence is assumed to have been added post facto and not part of the sequenced sample).
+*tag*_aa_alignment.fa:|AA translation of input sequences and inferred ancestral intermediates, in FASTA format.|
+*tag*_aa_alignment.txt:|AA translation of input sequences and inferred ancestral intermediates, in pretty print format.
+*tag*_nt_alignment.fa:|The input nt sequences and inferred ancestral intermediates, in FASTA format.
+*tag*_annotated_treefile.new:|The input tree, in Newick format, annotated with AA transitions. The transitions are provided as node labels.
+*tag*_annotated_treefile.png:|The above tree, rendered in .png format.
+*tag*_annotated_treefile.svg:|The above tree, rendered in .svg format.
+*tag*_annotated_treefile_tot.new:|The input tree, in Newick format, annotated with the number of AA transitions in each branch.
+*tag*_annotated_treefile_tot.png:|The above tree, rendered in .png format.
+*tag*_annotated_treefile_tot.svg:|The above tree, rendered in .svg format.
+*tag*_annotated_treefile_sum.new:|The input tree, in Newick format, annotated with a summary of transitions in each FR and CDR*.
+*tag*_annotated_treefile_sum.png:|The above tree, rendered in .png format*.
+*tag*_annotated_treefile_sum.svg:|The above tree, rendered in .svg format*.
+*tag*_cdr_analysis.html:|The CDR analysis, as an HTML table*.
+*tag*_intermediates_treefile.new:|The input tree, in Newick format, with intermediate nodes labelled. The main purpose of this tree is to indicate the relative position of each inferred ancestral intermediate in the tree.
+*tag*_intermediates_treefile.png:|The intermediate tree, rendered in .png format.
+*tag*_intermediates_treefile.svg:|The intermediate tree, rendered in .svg format.
+*tag*_aa_logo.png:|A logo frequency plot of the AA translation of all input sequences EXCEPT the first (root) sequence (the root sequence is assumed to have been added post facto and not part of the sequenced sample).
 
  *starred files are only produced if the CDR positions are defined in cdrfile.
 
@@ -90,7 +94,7 @@ The first AA in the file will be numbered 56, and subsequent AAs will be numbere
              6,A
              6,B
              
-The sequence will be numbered 1A,2,4,5,6,6A,6B,7,8,9,....
+The sequence will be numbered 1A, 2, 4, 5, 6, 6A, 6B, 7, 8, 9, ....
 
 
 #### *Example 3 - showing the use of insertions preceding the ordinal, as used by IMGT*
@@ -101,11 +105,11 @@ The sequence will be numbered 1A,2,4,5,6,6A,6B,7,8,9,....
              3;1
              3
 
-The sequence will be numbered 1,2.1,2.2,3.2,3.1,3,4... 
+The sequence will be numbered 1, 2.1, 2.2, 3.2, 3.1, 3, 4... 
 
 ### `cdrfile` ###
 
-A file that optionally determines the starting and ending position of each CDR, using the numbering scheme above. This is represented as six positions on a single line, representing the starting and ending position of CDRs 1,2 and 3 respectively. The sixth number (representing the upper bound of CDR3) is allowed to be higher than the highest position in the sequences, in which case CDR3 will be taken to run from its lower position (as indicated in the file) through to the last position in the sequence. The sequences are not required to span the entire range of positions specified in the cdrfile: for example the lowest position in the sequences could be 56, even though CDR1 was specified as spanning positions 27-38. The file may be empty, in which case CDR analysis is not performed and a warning is raised: other pipeline outputs will however be produced. Use an empty file for annotating non-Ab sequences.
+A file that optionally determines the starting and ending position of each Ig CDR, using the numbering scheme above. This is represented as six positions on a single line, representing the starting and ending position of CDRs 1,2 and 3 respectively. The sixth number (representing the upper bound of CDR3) is allowed to be higher than the highest position in the sequences, in which case CDR3 will be taken to run from its lower position (as indicated in the file) through to the last position in the sequence. The sequences are not required to span the entire range of positions specified in the cdrfile: for example the lowest position in the sequences could be 56, even though CDR1 was specified as spanning positions 27-38. The file may be empty, in which case CDR analysis is not performed and a warning is raised: other pipeline outputs will however be produced. Use an empty file for annotating non-Ab sequences.
 
 #### *Example 1*
 
