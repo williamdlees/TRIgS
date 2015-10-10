@@ -1,4 +1,4 @@
-# RevertToGermline #
+# RevertToGermlineCmd #
 
 Infer the germline sequences of a set of Ig variable region sequences, given their IMGT nucleotide analysis. Each gene is reverted to its germline and aligned with the chain. Other elements (P, N) are assumed not to have mutated from the germline. This hypothesis should be checked by examining other members of the clonal family.
 
@@ -26,4 +26,4 @@ Output sequences are aligned on full codon boundaries and incomplete codons are 
 
 ## Testing ##
 
-Executing the commands in test/test.sh will exercise AnnotateTree and RevertToGermline with sample data.
+Executing the commands in test/test.sh will exercise AnnotateTreeCmd and RevertToGermlineCmd with sample data.

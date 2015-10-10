@@ -1,4 +1,4 @@
-# AnnotateTree #
+# AnnotateTreeCmd #
 
 Given a set of nucleotide sequences and an inferred phylogenetic tree, create a set of reports:
 
@@ -35,7 +35,7 @@ To create logo plots, both Berkley Weblogo and Ghostscript must be installed, an
 Argument|Meaning
 ---------|-------
 `seqnumfile`|A file defining the sequence numbering (see 'File Formats' below).
-`seqfile`|A FASTA file containing the nucleotide sequences to be analysed. Sequences must all have the same length and must represent a whole number of valid codons. Whole-codon gaps (represented by ---) are allowed. The number of sequences must match the number of labelled nodes in the treefile (see below) and the FASTA labels must identically match the treefile's node labels. The first sequence in the file must represent the root. In the case of antibody sequences, this would normally be the germline, which may if necessary be inferred using the companion script [RevertToGermline](RevertToGermline.md).
+`seqfile`|A FASTA file containing the nucleotide sequences to be analysed. Sequences must all have the same length and must represent a whole number of valid codons. Whole-codon gaps (represented by ---) are allowed. The number of sequences must match the number of labelled nodes in the treefile (see below) and the FASTA labels must identically match the treefile's node labels. The first sequence in the file must represent the root. In the case of antibody sequences, this would normally be the germline, which may if necessary be inferred using the companion script [RevertToGermlineCmd](RevertToGermline.md).
 |`treefile`|The input tree, in Newick format. The pipeline will root the tree on the first node listed in `seqfile`: the tree as supplied therefore does not need to be rooted.
 |`cdrfile`|A file listing the locations of the CDRs (see 'File Formats' below). The file may be empty if no CDR analysis is required.
 |`tag`|A string which will be prepended to the filename of each output file produced by the script. The output files have fixed file names, listed below.
@@ -125,7 +125,7 @@ This example demonstrates the use of 'insertion' positions
 
 ## Configuration Files ##
 
-dnaml.ctl (in the same directory as AnnotateTree.py) specifies the input selections for dnaml and may be changed if desired.
+dnaml.ctl (in the same directory as AnnotateTreeCmd.py) specifies the input selections for dnaml and may be changed if desired.
 
 ## Working Files ##
 
@@ -137,5 +137,5 @@ tag_alignment_for_logo.fa contains the AA sequences used for the logo.
 
 Before use, verify that the pre-requisites listed are installed. Verfy that dnaml is available by opening a command prompt, changing to the directory containing the utilities, and typing dnaml or ./dnaml. If you wish to create logo plots, verify that Berkely Weblogo is installed by typing seqlogo or ./seqlogo.
 
-Executing the commands in test/test.sh will exercise AnnotateTree and RevertToGermline with sample data. Output AnnotateTree will be created in a subdirectory.
+Executing the commands in test/test.sh will exercise AnnotateTreeCmd and RevertToGermlineCmd with sample data. Output  from AnnotateTreeCmd will be created in a subdirectory.
 
