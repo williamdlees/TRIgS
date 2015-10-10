@@ -22,7 +22,7 @@ A collection of bioinformatics tools for sequence analysis, with an emphasis on 
 [**IgBLASTPlus**](docs/IgBLASTPlus.md) processes the output from NCBI's [IgBLAST]("http://www.ncbi.nlm.nih.gov/igblast/"),
 providing a full junction analysis and summarising results in an [IMGT]("http://imgt.org")-style tab-separated format. 
 
-[**ExtractFromImgt**](docs/ExtractFromImgt.md) is a flexible tool for extracting sequences from IMGT/IgBLASTPlus files.
+[**ExtractFromIMGT**](docs/ExtractFromIMGT.md) is a flexible tool for extracting sequences from IMGT/IgBLASTPlus files.
 
 ## Further Information ##
 
