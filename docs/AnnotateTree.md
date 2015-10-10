@@ -18,7 +18,7 @@ Sequence numbering can be controlled by the user, allowing both deletions and in
           
 <a href="http://etetoolkit.org/">The ETE Toolkit</a> and its dependency <a href="http://www.riverbankcomputing.co.uk/software/pyqt/download">PyQt4.</a>
           
-Optionally, <a href="http://weblogo.berkeley.edu/logo.cgi">Berkeley Weblogo</a> and <a href="http://www.ghostscript.com">Ghostscript</a> may be installed in order to generate a frequency plot of input sequences.
+Optionally, <a href="http://weblogo.berkeley.edu">Berkeley Weblogo</a> and <a href="http://www.ghostscript.com">Ghostscript</a> may be installed in order to generate a frequency plot of input sequences.
 
 ## Installation Notes ##
 

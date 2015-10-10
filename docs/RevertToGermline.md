@@ -20,7 +20,7 @@ option|Any combination of:
 | |o - list derived germline for each input sequence
 | |c - list consensus for derived germlines
 | |x - write verbose analysis through the report functio 
-| |-m followed immediately by a number will list V-gene mutations from germline that are seen in all sequences of a particular germline, for all germlines where there are at least that number of sequences.
+|-m*dd*|-m followed immediately by a two digit number will list V-gene mutations from germline that are seen in all sequences of a particular germline, for all germlines where there are at least that number of sequences.
 
 Output sequences are aligned on full codon boundaries and incomplete codons are gapped out
 
