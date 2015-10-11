@@ -150,7 +150,7 @@ def call_extract(infile, options):
     except:
         pass
     
-    subprocess.call("python ..\ExtractFromIMGT.py " + args, shell=False, cwd=os.getcwd())
+    subprocess.call("python ../ExtractFromIMGT.py " + args, shell=False, cwd=os.getcwd())
 
     for seq_record in SeqIO.parse(OUTFILE, 'fasta'):
         print "%s: %s" % (seq_record.id, str(seq_record.seq))
