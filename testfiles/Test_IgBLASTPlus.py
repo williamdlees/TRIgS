@@ -27,7 +27,7 @@ import csv
 MODEL_OUTPUT_FILE = 'summarise_model_n.txt'
 TEST_IGBLAST_OUTPUT = 'summarise_test.out'
 TEST_SEQUENCES = 'summarise_test.fasta'
-JGERM_FILE = 'rabbit_IGJ.fa'
+JGERM_FILE = 'rabbit_IGj.fa'
 TEST_OUTPUT_FILE = 'summarise_test_n.txt'
 
 try:
