@@ -1,8 +1,9 @@
 # BioTools
 A collection of bioinformatics tools for sequence analysis, with an emphasis on Next-Generation Sequencing and [Rep-Seq](http://www.ncbi.nlm.nih.gov/pubmed/22043864 "Rep-Seq").
 
+Online versions of some tools are available on our [website](http://cimm.ismb.lon.ac.uk/pat).
 
-[**AnnotateTreeCmd**](docs/AnnotateTree.md) creates annotated lineage trees and sequence alignments showing the point at which amino acid substitutions occur. It uses [PHYLIP’s dnaml](http://evolution.genetics.washington.edu/phylip.html) for ancestral reconstruction. Sequence numbering can be defined by the user, for example to match the numbering of a crystal structure, or to match a standard numbering scheme. If the sequences represent a B-cell clonal lineage, additional reports relating to variation in the CDRs can be produced. An [online version](http://cimm.ismb.lon.ac.uk/pat/annotatetree/) is available.
+[**AnnotateTreeCmd**](docs/AnnotateTree.md) creates annotated lineage trees and sequence alignments showing the point at which amino acid substitutions occur. It uses [PHYLIP’s dnaml](http://evolution.genetics.washington.edu/phylip.html) for ancestral reconstruction. Sequence numbering can be defined by the user, for example to match the numbering of a crystal structure, or to match a standard numbering scheme. If the sequences represent a B-cell clonal lineage, additional reports relating to variation in the CDRs can be produced.
 
 ![Image](https://rawgit.com/williamdlees/BioTools/master/docs/treediag5.svg)
 <br>Part of a tree produced by AnnotateTreeCmd, showing amino acid substitutions
@@ -17,12 +18,16 @@ A collection of bioinformatics tools for sequence analysis, with an emphasis on 
 	154                SVG......................F...........T......R.RY................
 <br>Part of an alignment produced by AnnotateTreeCmd, showing custom numbering including deletions
 
-[**RevertToGermlineCmd**](docs/RevertToGermline.md) uses a simple approach to infer the germline ancestor of a B-cell variable region sequence, given the IMGT junction analysis. If a clonal lineage is available, the inferred germline can be used to root a phylogenetic tree, from which a more accurate germline can then be inferred using AnnotateTree. An [online version](http://cimm.ismb.lon.ac.uk/pat/germline/) is available.
+[**RevertToGermlineCmd**](docs/RevertToGermline.md) uses a simple approach to infer the germline ancestor of a B-cell variable region sequence, given the IMGT junction analysis. If a clonal lineage is available, the inferred germline can be used to root a phylogenetic tree, from which a more accurate germline can then be inferred using AnnotateTree.
 
 [**IgBLASTPlus**](docs/IgBLASTPlus.md) processes the output from NCBI's [IgBLAST]("http://www.ncbi.nlm.nih.gov/igblast/"),
 providing a full junction analysis and summarising results in an [IMGT]("http://imgt.org")-style tab-separated format. 
 
 [**ExtractFromIMGT**](docs/ExtractFromIMGT.md) is a flexible tool for extracting sequences from IMGT/IgBLASTPlus files.
+
+## Installation and Usage ##
+
+To use the tools, clone this repository or download and unzip the Zip file. All tools require <a href="https://www.python.org/downloads">Python 2 (v 2.7 or later)</a>, and <a href="http://biopython.org">BioPython.</a>. Additional dependencies and usage information are given in the links above for each tool.         
 
 ## Further Information ##
 
