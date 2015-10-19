@@ -50,14 +50,18 @@ def main():
         id = seq_record.id.split('|')[1] if len(seq_record.id.split('|')) > 1 else seq_record.id
         j_germs[id] = str(seq_record.seq)
 
-    with open(args.igblastfile, 'r') as fi, open(args.tag + '_n.txt', 'wb') as fo_n, open(args.tag + '_aa.txt', 'wb') as fo_aa:
-        fieldnames = ['Sequence ID', 'V-GENE and allele', 'D-GENE and allele', 'J-GENE and allele', 'Chain Type', 'Stop Codon', 'V-J frame', 'Functionality', 
-                 'Strand', 'FR1-IMGT', 'CDR1-IMGT', 'FR2-IMGT', 'CDR2-IMGT', 'FR3-IMGT', 'CDR3-IMGT', 'FR4-IMGT', 'JUNCTION-IMGT', 'V 3prime', 'V-D Junction', 'D-region', 'D-J Junction', 'V-J Junction', 'J 5prime', 'Notes', 'nt Sequence']
+    with open(args.igblastfile, 'r') as fi, open(args.tag + '_n.txt', 'wb') as fo_n, open(args.tag + '_aa.txt', 'wb') as fo_aa, open(args.tag + '_j.txt', 'wb') as fo_j:
+        fieldnames = ['Sequence ID', 'Functionality', 'V-GENE and allele', 'D-GENE and allele', 'J-GENE and allele', 'Chain Type', 'Stop Codon', 'V-J frame', 
+                 'Strand', 'FR1-IMGT', 'CDR1-IMGT', 'FR2-IMGT', 'CDR2-IMGT', 'FR3-IMGT', 'CDR3-IMGT', 'FR4-IMGT', 'JUNCTION-IMGT', 'Notes', 'nt Sequence']
         writer_n = csv.DictWriter(fo_n, fieldnames, restval='', extrasaction='raise', dialect='excel-tab')
         writer_n.writeheader()
         writer_aa = csv.DictWriter(fo_aa, fieldnames, restval='', extrasaction='raise', dialect='excel-tab')
         writer_aa.writeheader()
+        j_fieldnames = ['Sequence ID', 'Functionality', 'V-GENE and allele', 'D-GENE and allele', 'J-GENE and allele', 'JUNCTION', '3\'V-REGION', 'N-REGION', 'D-REGION', 'N2-REGION', '5\'J-REGION', 'Notes']
+        writer_j = csv.DictWriter(fo_j, j_fieldnames, restval='', extrasaction='raise', dialect='excel-tab')
+        writer_j.writeheader()
         res = {}
+        junc = {}
         lastline = ''
         alignments = False
         
@@ -67,16 +71,7 @@ def main():
                 line = line.strip()
                 items = line.split('\t')
                 
-                if 'Query= ' in line:
-                    if len(res) > 0:
-                        for k,v in res.iteritems():
-                            if 'N/A' in v:
-                                res[k] = ''         # blank out any N/As from IgBLAST for compatibility with IMGT
-
-                        writer_n.writerow(res) 
-                        res = translate_res(res)        
-                        writer_aa.writerow(res)
-                        
+                if 'Query= ' in line:                        
                     res = {}
                     res['Sequence ID'] = line.replace('Query= ', '').strip()
                     res['Notes'] = ''
@@ -84,7 +79,7 @@ def main():
                 elif 'V-(D)-J rearrangement summary for query sequence' in lastline:               
                     res['V-GENE and allele'] = items[0]
                     
-                    if 'VH' in line:
+                    if 'D gene' in lastline:
                         res['D-GENE and allele'] = items[1]
                         bump = 1
                     else:
@@ -113,16 +108,26 @@ def main():
                     else:
                         selected_jgene = res['J-GENE and allele']
     
-                elif 'be assigned to either rearranging gene' in lastline:
-                    res['V 3prime'] = (items[0].replace('(', '').replace(')', ''))
-                    if res['Chain Type'] == 'VH':
-                        res['V-D Junction'] = (items[1].replace('(', '').replace(')', ''))
-                        res['D-region'] = (items[2].replace('(', '').replace(')', ''))
-                        res['D-J Junction'] = (items[3].replace('(', '').replace(')', ''))
-                        res['J 5prime'] = (items[4].replace('(', '').replace(')', ''))
+                elif 'V-(D)-J junction details' in lastline:               
+                    junc['Sequence ID'] = res['Sequence ID']
+                    junc['Functionality'] = res['Functionality']
+                    
+                    for i in range(0, len(items)):
+                        if items[i] == 'N/A':
+                            items[i] = ''
+                    
+                    if 'D region' in lastline:
+                        junc['3\'V-REGION'] = items[0]
+                        junc['N-REGION'] = (items[1].replace('(', '')).replace(')', '')
+                        junc['D-REGION'] = items[2]
+                        junc['N2-REGION'] = (items[3].replace('(', '')).replace(')', '')
+                        junc['5\'J-REGION'] = items[4]
                     else:
-                        res['V-J Junction'] = (items[1].replace('(', '').replace(')', ''))
-                        res['J 5prime'] = (items[2].replace('(', '').replace(')', ''))
+                        junc['3\'V-REGION'] = items[0]
+                        junc['N-REGION'] = (items[1].replace('(', '')).replace(')', '')
+                        junc['D-REGION'] = ''
+                        junc['N2-REGION'] = ''
+                        junc['5\'J-REGION'] = items[2]
                         
                 elif 'Alignments' in line:
                     alignments = True
@@ -138,18 +143,10 @@ def main():
                     al_jmatch_end = 0
                     raw_fr3 = ''
                     
-                    if 'V-GENE and allele' in res:
-                        vmatch = res['V-GENE and allele'] if len(res['V-GENE and allele']) == 1 else res['V-GENE and allele'].split(',')[0]
-                    else:
-                        vmatch = ''
-                    if 'J-GENE and allele' in res:
+                    if 'J-GENE and allele' in res and res['J-GENE and allele'] != 'N/A':
                         jmatch = res['J-GENE and allele'] if len(res['J-GENE and allele']) == 1 else res['J-GENE and allele'].split(',')[0]
                     else:
                         jmatch = ''
-                    if 'D-GENE and allele' in res:
-                        dmatch = res['V-GENE and allele'] if len(res['V-GENE and allele']) == 1 else res['V-GENE and allele'].split(',')[0]
-                    else:
-                        dmatch = ''
                         
                 elif alignments:
                     items = rawline.split()
@@ -233,14 +230,14 @@ def main():
                                 fields_correct = True
                                 if start_ind < 0:
                                     if verbose:
-                                        print "Can't infer any fields in %s" % al_narrative
+                                        print "%s: Alignment parser can't infer any fields in '%s'" % (res['Sequence ID'], al_narrative)
                                 else:
                                     for i,v in enumerate(field_indeces):
                                         if v < 0:
                                             field_indeces[i] = start_ind + i
                                         elif v != start_ind + i:
                                             if verbose:
-                                                print "Fields out of order, or missing field, in %s" % al_narrative
+                                                print "%s: Alignment fields out of order, or missing field, in %s" % (res['Sequence ID'], al_narrative)
                                             fields_correct = False
                                             break
                                                                                                                 
@@ -324,23 +321,65 @@ def main():
                                     res['CDR3-IMGT'] = trailer[:CDR3_end]
                                     res['JUNCTION-IMGT'] = res['FR3-IMGT'][-3:] + trailer[:CDR3_end + 3]
                                     res['FR4-IMGT'] = trailer[CDR3_end:]
+                                    
+                                    inner_junc = junc['N-REGION'] + junc['D-REGION'] + junc['N2-REGION']
+                                    if inner_junc in res['JUNCTION-IMGT']:
+                                        p = res['JUNCTION-IMGT'].find(inner_junc)
+                                        junc['3\'V-REGION'] = res['JUNCTION-IMGT'][:p] if p > 0 else ''
+                                        junc['5\'J-REGION'] = res['JUNCTION-IMGT'][p + len(inner_junc):] if p + len(inner_junc) < len(res['JUNCTION-IMGT']) else ''
+                                        
+                                        if junc['3\'V-REGION'] + inner_junc + junc['5\'J-REGION'] != res['JUNCTION-IMGT']:
+                                            if verbose:
+                                                print "%s: junction misalignment" % res['Sequence ID']  
+                                            res['Notes'] += 'Error: junction misalignment'
+                                    else:
+                                        # If IgBLAST does not find a V-gene alignment which extends as far as the first Cys of the junction, it creates an N-region which covers
+                                        # the first Cysteine and extends downstream beyond the junction. As the junction analysis is inaccurate, we mark such (rare) occurrences 
+                                        # as non-productive, even though IgBLAST was able to determine the junction in the alignment.
+                                        if verbose:
+                                            print "%s: junction analysis %s does not match inferred junction %s" % (res['Sequence ID'], inner_junc, res['JUNCTION-IMGT'])
+                                        res['Notes'] += ' Junction analysis does not match inferred junction. Possibly first Cysteine was not identified in V-gene alignment.'
+                                        res['Functionality'] = 'unproductive'
                                 else:
                                     res['Notes'] += 'Closing CDR3 F/W not found.'
                                     res['Functionality'] = 'unproductive'
                         
+                            else:
+                                if jmatch == '':
+                                    res['Notes'] += 'J-gene not identified. '
+                                if 'FR3-IMGT' not in res:
+                                    res['Notes'] += 'FR3 not identified. '
+                                res['Functionality'] = 'unproductive'
+                        
+                            if len(res) > 0:
+                                for k,v in res.iteritems():
+                                    if 'N/A' in v:
+                                        res[k] = ''         # blank out any N/As from IgBLAST for compatibility with IMGT
+        
+                                junc['Sequence ID'] = res['Sequence ID']
+                                junc['Functionality'] = res['Functionality']
+                                junc['V-GENE and allele'] = res['V-GENE and allele']
+                                junc['D-GENE and allele'] = res['D-GENE and allele']
+                                junc['J-GENE and allele'] = res['J-GENE and allele']
+                                junc['Notes'] = res['Notes']
+                                
+                                if 'JUNCTION-IMGT' in res:
+                                    junc['JUNCTION'] = res['JUNCTION-IMGT']
+                                
+                                for k,v in junc.iteritems():
+                                    if 'N/A' in v:
+                                        junc[k] = ''         # blank out any N/As from IgBLAST for compatibility with IMGT
+    
+                                writer_n.writerow(res) 
+                                writer_j.writerow(junc)
+                                res = translate_res(res)        
+                                writer_aa.writerow(res)
+                            
                 lastline = rawline
             
             except:
                 id = res['Sequence ID'] if 'Sequence ID' in res else '<unknown>'
                 print "Error parsing sequence %s:\n%s" % (id, traceback.format_exc())
-
-        for k,v in res.iteritems():
-            if 'N/A' in v:
-                res[k] = ''         # blank out any N/As from IgBLAST for compatibility with IMGT
-        
-        writer_n.writerow(res)
-        res = translate_res(res)        
-        writer_aa.writerow(res)        
 
 def translate_res(res):
     fieldorder = ['FR1-IMGT', 'CDR1-IMGT', 'FR2-IMGT', 'CDR2-IMGT', 'FR3-IMGT', 'CDR3-IMGT', 'FR4-IMGT']

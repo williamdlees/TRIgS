@@ -17,7 +17,49 @@ Argument|Meaning
 `[-v]`|Provide diagnostic output when parsing IgBLAST alignments.
 `[-h]`|Provide a help message and exit
 
-IgBLASTPlus provides two output files whose names are prepended with the `tag` specified on the command line. *tag*_n.txt contains a nucleotide-level analysis, while *tag*_aa.txt provides the equivalent analysis with nucleotide sequences translated to amino acids. Both files are tab-separated. Column names match IMGT names, for example FR1-IMGT, CDR1-IMGT. The output includes two columns that are not provided by IMGT analysis: 'Chain Type', which includes the chain type determined by IgBLAST, and FR4-IMGT, which is deduced by IgBLASTPlus junction analysis, and contains the sequence running from the conserved W or F to the 3' end of the aligned J-gene.
+## Output Files ##
+
+All files are tab-separated with column headers.
+
+### *tag*_n.txt, *tag*_aa.txt ###
+
+Sequences are provided at nucleotide level in *tag*_n.txt and are translated to protein in *tag*_a.txt.
+
+Fields included:
+
+Field|Content
+-----|-------
+`Sequence ID`|Query label reported by IgBLAST
+`Functionality`|`productive` if a valid, in-frame junction was found that is consistent with IgBLAST's junction analysis and `unproductive` otherwise. This is more rigorous than IgBLAST's 'Productive' summary, in that we require FR3 to have been identified in the alignment, and for the identified FR3 to extend to the first Cysteine of the junction.
+`V-GENE and allele`|The top-ranking identified V-gene (multiple values are separated by commas if more than one gene was identified with the same top-ranking score).
+`D-GENE and allele`|The top-ranking identified J-gene, as above (blank for light chain sequences).
+`J-GENE and allele`|The top-ranking identified J-gene, as above.
+`Chain Type`|Chain type as reported by IgBLAST.
+`Stop Codon`|Presence in the sequence of a stop codon, as reported by IgBLAST.
+`V-J Frame`|As reported by IgBLAST
+`Strand`|As reported by IgBLAST
+`FR1-IMGT, CDR1-IMGT, FR2-IMGT, CDR2-IMGT, FR3-IMGT`|Sequences as reported in the IgBLAST alignment.
+`CDR3-IMGT, JUNCTION-IMGT, FR4-IMGT`|Sequences determined by identifying the conserved terminating W (heavy chain or F (light chain).
+`Notes`|Notes and warnings provided by IgBLASTPlus during analysis
+`nt sequence`|The full nucleotide sequence comprising the query. This is provided in both the nt and the aa file, making it easy to copy and paste the sequence to a different system for consultation
+
+### *tag*_j.txt ###
+
+Nucleotide analysis of the junction, based on IgBLAST's junction details and supplemented by the identification of the entire junction.
+
+Fields included:
+
+Field|Content
+-----|-------
+`Sequence ID`|Query label reported by IgBLAST
+`Functionality`|'productive' if a valid, in-frame junction was found that is consistent with IgBLAST's junction analysis. This is a little more rigorous than IgBLAST's 'Productive' summary, in that we require FR3 to have been identified in the alignment, and for the identified FR3 to extend to the first Cysteine of the junction.
+`V-GENE and allele`|The top-ranking identified V-gene (multiple values are separated by commas if more than one gene was identified with the same top-ranking score).
+`D-GENE and allele`|The top-ranking identified J-gene, as above (blank for light chain sequences).
+`J-GENE and allele`|The top-ranking identified J-gene, as above.
+`JUNCTION`|The junction sequence.
+`3'V-REGION, N-REGION, D-REGION, N2-REGION, 5'J-REGION`|Sequences identified from IgBLAST's junction details (`D-REGION` and `N2-REGION` are blank for light chain sequences). `3'V-REGION` and `5'J-REGION` are modified from those reported by IgBLAST so that the entire junction is exactly covered.
+`Notes`|Notes as reported in the other files. 
+
 
 ## Testing ##
 
