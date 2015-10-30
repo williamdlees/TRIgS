@@ -26,6 +26,7 @@ import traceback
 from Bio import SeqIO
 from Bio.Seq import Seq
 
+MAX_SEQ_ID=60   #max length of sequence identifier (to avoid truncation by IgBLAST which happens at around 64-68 characters
 
 def main():
     parser = argparse.ArgumentParser(description='Summarise each IgBlast analysis on a single tab-separated line.',
@@ -42,7 +43,7 @@ def main():
 
     seqs = {}
     for seq_record in SeqIO.parse(args.seqfile, 'fasta'):
-        seqs[seq_record.id] = str(seq_record.seq.upper())
+        seqs[seq_record.id] = str(seq_record.seq.upper())[:MAX_SEQ_ID]
 
     j_germs = {}
     for seq_record in SeqIO.parse(args.jgermfile, 'fasta'):
@@ -73,7 +74,7 @@ def main():
                 
                 if 'Query= ' in line:                        
                     res = {}
-                    res['Sequence ID'] = line.replace('Query= ', '').strip()
+                    res['Sequence ID'] = (line.replace('Query= ', '').strip())[:MAX_SEQ_ID]
                     res['Notes'] = ''
                     alignments = False
                 elif 'V-(D)-J rearrangement summary for query sequence' in lastline:               
