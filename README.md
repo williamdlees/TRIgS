@@ -1,4 +1,4 @@
-# BioTools
+# TRIgS - Tools for Rendering Ig Sequences
 A collection of bioinformatics tools for sequence analysis, with an emphasis on Next-Generation Sequencing and [Rep-Seq](http://www.ncbi.nlm.nih.gov/pubmed/22043864 "Rep-Seq").
 
 Online versions of some tools are available on our [website](http://cimm.ismb.lon.ac.uk/pat).
