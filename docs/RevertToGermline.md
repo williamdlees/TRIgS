@@ -13,16 +13,30 @@ germline_file|Filename of the germline library to use (single file in IMGT forma
 species_name|The species name as used in the germline file, e.g. "Homo sapiens"
 outfile|The name of the output file.
 option|Any combination of:
-| |f - list 'full' germlines where genes are reverted and ns preserved
-| |v - list germlines where just the v-gene is reverted and other regions gapped
-| |j - list germlines where all genes are reverted and n-regions gapped
-| |i - list input sequences
-| |o - list derived germline for each input sequence
-| |c - list consensus for derived germlines
-| |x - write verbose analysis through the report functio 
+| |One or more *Output controls*, defining what should be included in the output file:
+| |o - include a derived germline corresponding to each input sequence
+| |c - include a consensus sequence built from all the derived germlines
+| |i - include the input sequences themselves
+| |One or more *Content controls*, defining how the germlines should be derived. The resulting sequences include a suffix in their name (shown in brackets below) so that they can be distinguished:
+| |f - 'full' germlines where all genes are reverted and n-regions preserved (suffix _germ)
+| |v - germlines where just the v-gene is reverted and other regions gapped (suffix _germ_v)
+| |j - germlines where all genes are reverted and n-regions gapped (suffix _germ_vdj)
+| |*Diagnostic controls:* 
+| |x - write verbose analysis through the report function
 |-m*dd*|-m followed immediately by a two digit number will list V-gene mutations from germline that are seen in all sequences of a particular germline, for all germlines where there are at least that number of sequences.
 
 Output sequences are aligned on full codon boundaries and incomplete codons are gapped out
+
+## Example Options ##
+
+Option|Resulting Output Sequences
+------|--------------------------
+| of  |A reverted sequence corresponding to each input sequence. All germlines are reverted, and n-regions preserved.
+| ocf |As above, plus a consensus sequence derived from all reverted sequences.
+| oicf |As above, and also all input sequences are included.
+| cj  |A consensus sequence, derived from reverted sequences where all genes are reverted, and n-regions gapped.
+
+
 
 ## Testing ##
 
