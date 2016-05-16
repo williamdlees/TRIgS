@@ -28,7 +28,9 @@ def main():
     parser.add_argument("analysis_file", help='analysis file from analyse_igblast_results.py')
     parser.add_argument("required_fields", help='the fields to extract, separated by + (e.g. CDR1-IMGT+FR2-IMGT+CDR2-IMGT). Specified fields are concatenated.')
     parser.add_argument("outfile", help='output file (FASTA)')
-    parser.add_argument("-g", "--germline", help='Restrict to germlines containing the specified string')
+    parser.add_argument("-g", "--germline", help='Restrict to v-germlines containing the specified string')
+    parser.add_argument("-d", "--dgermline", help='Restrict to d-germlines containing the specified string')
+    parser.add_argument("-j", "--jgermline", help='Restrict to j-germlines containing the specified string')
     parser.add_argument("-p", "--productive", help="Restrict to productive sequences", action="store_true")
     parser.add_argument("-u", "--unknown_nuc", help="Do not include sequences including N (nt file only)", action="store_true")
     parser.add_argument("-s", "--stopcodon", help="Do not include sequences including stop codons (AA file only)", action="store_true")
@@ -42,6 +44,8 @@ def main():
     fieldorder = ['FR1-IMGT', 'CDR1-IMGT', 'FR2-IMGT', 'CDR2-IMGT', 'FR3-IMGT', 'CDR3-IMGT', 'FR4-IMGT']
     verbose = args.verbose
     germline = args.germline
+    jgermline = args.jgermline
+    dgermline = args.dgermline
     chaintype = args.chaintype
     wanted_fields = args.required_fields.split('+')
     
@@ -56,11 +60,17 @@ def main():
                     if wanted_field not in reader.fieldnames:
                         print 'Error: field %s is not included in the analysis file.' % wanted_field
                         errors = True
+                if germline and 'V-GENE and allele' not in row:
+                    print "Error: specific v-gene requested, but 'V-GENE and allele' field is not included in the analysis file."                    
+                if dgermline and 'D-GENE and allele' not in row:
+                    print "Error: specific d-gene requested, but 'D-GENE and allele' field is not included in the analysis file."                    
+                if jgermline and 'J-GENE and allele' not in row:
+                    print "Error: specific j-gene requested, but 'J-GENE and allele' field is not included in the analysis file."                    
                 if errors:
                     exit(1)
                     
                 firstline = False
-                
+
             if germline is not None:
                 g = row['V-GENE and allele'].split(",")
                 match = False
@@ -70,7 +80,27 @@ def main():
                         break
                 if not match:
                     continue
-                    
+
+            if dgermline is not None:
+                g = row['D-GENE and allele'].split(",")
+                match = False
+                for gg in g:
+                    if dgermline in gg:
+                        match = True
+                        break
+                if not match:
+                    continue
+
+            if jgermline is not None:
+                g = row['J-GENE and allele'].split(",")
+                match = False
+                for gg in g:
+                    if jgermline in gg:
+                        match = True
+                        break
+                if not match:
+                    continue
+
             if chaintype is not None:
                 g = row['Chain Type']
                 if chaintype != g:
