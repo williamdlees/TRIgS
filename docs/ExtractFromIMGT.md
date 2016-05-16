@@ -4,7 +4,7 @@ ExtractFromIMGT extracts specified fields from an IMGT or IgBLASTPlus tab-separa
 
 ## Usage ##
 
-	python ExtractFromIMGT.py  [-h] [-g GERMLINE] [-p] [-u] [-s] [-t CHAINTYPE] 
+	python ExtractFromIMGT.py  [-h] [-g V-GERMLINE] [-d D-GERMLINE] [-j J-GERMLINE] [-p] [-u] [-s] [-t CHAINTYPE] 
 	                           [-c] [--fr1_lim FR1_LIM] [--fr4_lim FR4_LIM] [-v] 
                                analysis_file required_fields outfile
 
@@ -14,6 +14,8 @@ Argument|Meaning
 `required_fields`|Column headers of fields to include in the output, in order, separated by + (e.g. CDR1-IMGT+FR2-IMGT)
 `outfile`|Pathname of the output file.
 `[-g GERMLINE]`|Only records matched against the specified V-germline will be included. If the analysis file lists several possible V-germlines for a sequence, the record will be included if any of them match. The specified match can be a substring, for example `HV1S45*` will match `IGHV1S45*01, IGHV1S45*02`, etc.
+`[-d GERMLINE]`|Only records matched against the specified D-germline will be included. If the analysis file lists several possible V-germlines for a sequence, the record will be included if any of them match. The specified match can be a substring, for example `HV1S45*` will match `IGHV1S45*01, IGHV1S45*02`, etc.
+`[-j GERMLINE]`|Only records matched against the specified J-germline will be included. If the analysis file lists several possible V-germlines for a sequence, the record will be included if any of them match. The specified match can be a substring, for example `HV1S45*` will match `IGHV1S45*01, IGHV1S45*02`, etc.
 `[-p]`|Restrict the output to sequences that are classed productive in the Functionality column
 `[-u]`|Exclude extracts that include an unknown (N) nucleotide (applicable to nucleotide sequence files only)
 `[-s]`|Exclude extracts that include stop codons (applicable to amino acid sequence files only)
