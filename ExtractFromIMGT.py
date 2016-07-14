@@ -24,8 +24,8 @@ import argparse
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract specified sequences from an analysis file created by analyse_igblast_results.py.')
-    parser.add_argument("analysis_file", help='analysis file from analyse_igblast_results.py')
+    parser = argparse.ArgumentParser(description='Extract specified sequences from an IMGT-style CSV file.')
+    parser.add_argument("analysis_file", help='analysis file from (IMGT, IgBLASTPlus format)')
     parser.add_argument("required_fields", help='the fields to extract, separated by + (e.g. CDR1-IMGT+FR2-IMGT+CDR2-IMGT). Specified fields are concatenated.')
     parser.add_argument("outfile", help='output file (FASTA)')
     parser.add_argument("-g", "--germline", help='Restrict to v-germlines containing the specified string')
