@@ -5,15 +5,15 @@ ClusterGraph takes a cluster file produced by ClusterSeqs or by [CD-HIT](http://
 ## Usage ##
 
      ClusterGraph.py [-h] [-l LIMIT]
-                     infile clstfile outfile_prefix colourfile idprefix
+                     infile clstfile colourfile outfile_prefix idprefix
                      highlightcolour cutoff
 
 Argument|Meaning
 ---------|-------
 `infile`|Sequence file name (FASTA format).
 `clstfile`|Cluster file name (CD-HIT format).
-`outfile_prefix`|Prefix for output files
 `colour file`|Colour scheme
+`outfile_prefix`|Prefix for output files
 `idprefix`|Prefix of 'generic' sequence IDs
 `highlightcolour`|Colour to use for non-generic sequences
 `cutoff`|Distance cutoff for adjacency (expressed as a fraction between 0 and 1)
