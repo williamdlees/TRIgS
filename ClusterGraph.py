@@ -51,7 +51,7 @@ def main(argv):
     seq_counts = {}
     first_sample_seen = {}
     read_seqs(seqs, seq_counts, first_sample_seen, colours, args.infile)
-    clusters = read_clusters(args.clstfile, limit)
+    clusters = read_clusters(args.clstfile, limit, colours, args.idprefix)
     
     edges = []
     verts = []
@@ -89,7 +89,7 @@ def read_seqs(seqs, seq_counts, first_sample_seen, colours, infile):
     return seq_counts
 
 # Provide a list of cluster members
-def read_clusters(clstfile, limit):
+def read_clusters(clstfile, limit, colours, idprefix):
     clusters = []
     cluster_ids = []
     count = 0
@@ -106,6 +106,17 @@ def read_clusters(clstfile, limit):
                 m = re.search('>(.+?)\.\.\.', line)
                 if m:
                     id = m.group(1)
+                    # only include 'special' sequences, or sequences which have a defined colour
+                    include = False
+                    if id[:len(idprefix)] == idprefix:
+                        for (sampleid, colour) in colours:
+                            if sampleid in id:
+                                include = True
+                                break
+                    else:
+                        include = True
+                    if include:
+                        cluster_ids.append(id)
 
         if len(cluster_ids) > 1:
             clusters.append(cluster_ids)

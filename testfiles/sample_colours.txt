@@ -2,5 +2,3 @@ A1,red
 A2,yellow
 A3,green
 TP,lightblue
-TS,blue
-TLN,purple
