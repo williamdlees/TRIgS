@@ -72,7 +72,10 @@ def main(argv):
     fieldnames = None
     wanted_rows = []
     with open(args.imgtfile, 'r') as fi:
-        reader = csv.DictReader(fi, delimiter='\t')
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
         fieldnames = reader.fieldnames
         for row in reader:
             id = row['Sequence ID']
@@ -82,7 +85,7 @@ def main(argv):
                 wanted_rows.append(row)
                 
     with open(args.outfile, 'wb') as fo:
-        writer = csv.DictWriter(fo, fieldnames=fieldnames)
+        writer = csv.DictWriter(fo, fieldnames=fieldnames, dialect='excel-tab')
         writer.writeheader()
         for row in wanted_rows:
             writer.writerow(row)

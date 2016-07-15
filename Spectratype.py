@@ -70,7 +70,10 @@ def main(argv):
 def plot_file(infile, xmax, ymax, unique, title, nrows, ncols, plot_number, dupheader):
     seen = {}
     with open(infile, 'r') as fi:
-        reader = csv.DictReader(fi, delimiter='\t')
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
         lengths = np.zeros(600)
         for row in reader:
             if 'unproductive' not in row['Functionality'] and row['CDR3-IMGT'] and (not unique or row['CDR3-IMGT'] not in seen):

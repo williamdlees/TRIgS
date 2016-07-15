@@ -52,6 +52,10 @@ def main():
     firstline = True
     with open(args.analysis_file, 'r') as fi, open(args.outfile, 'wb') as fo:
         reader = csv.DictReader(fi, delimiter='\t')
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
         for row in reader:
             errors = False
             if firstline:

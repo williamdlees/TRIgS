@@ -76,7 +76,10 @@ def plot_file(infile, detail, field, limit, alpha_sort, dupheader, frequency, ym
     germ_usage = {}
 
     with open(infile, 'r') as fi:
-        reader = csv.DictReader(fi, delimiter='\t')
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
         for row in reader:
             if 'unproductive' not in row['Functionality'] and field in row and row[field] != '':
                 germs = to_germ(row[field], detail)           
