@@ -76,6 +76,8 @@ def main():
                 firstline = False
 
             if germline is not None:
+                if row['V-GENE and allele'] is None:
+                    continue
                 g = row['V-GENE and allele'].split(",")
                 match = False
                 for gg in g:
@@ -86,6 +88,8 @@ def main():
                     continue
 
             if dgermline is not None:
+                if row['D-GENE and allele'] is None:
+                    continue
                 g = row['D-GENE and allele'].split(",")
                 match = False
                 for gg in g:
@@ -96,6 +100,8 @@ def main():
                     continue
 
             if jgermline is not None:
+                if row['J-GENE and allele'] is None:
+                    continue
                 g = row['J-GENE and allele'].split(",")
                 match = False
                 for gg in g:
