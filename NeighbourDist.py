@@ -97,7 +97,7 @@ def main(argv):
     plt.ylabel('Frequency')
     if length_lims:
         plt.axis(length_lims)
-    plt.savefig(args.outprefix + 'CDR3_length.pdf')        
+    plt.savefig(args.outprefix + '_length_distribution.pdf')        
     if args.interactive:
         plt.show()
     
@@ -120,7 +120,7 @@ def main(argv):
     plt.ylabel('Occurrences')
     if dist_lims:
         plt.axis(dist_lims)
-    plt.savefig(args.outprefix + 'CDR3_min_dist.pdf')        
+    plt.savefig(args.outprefix + '_min_dist.pdf')        
     if args.interactive:
         plt.show()
 
