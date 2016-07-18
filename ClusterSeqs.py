@@ -65,7 +65,7 @@ def main(argv):
     else:
         pool = Pool()
 
-    seq_list = read_unique_seqs(infile)
+    seq_list = read_seqs(infile)
     if limit:
         seq_list = sample_seqs(seq_list, limit)
 
@@ -195,18 +195,14 @@ def sample_seqs(seq_list, limit):
     return seq_list
 
 
-def read_unique_seqs(infile):
-    # move seqs into dict, indexed by length. Eliminate duplicates.
+def read_seqs(infile):
     seq_list = []
-    seen_seqs = {}
     for seq_record in SeqIO.parse(infile, "fasta"):
         seq = str(seq_record.seq)
-        if seq not in seen_seqs:
-            seq_list.append((seq, seq_record.id))
-            seen_seqs[seq] = 1
+        seq_list.append((seq, seq_record.id))
     
     if verbose:
-        print('%d unique sequences.' % len(seen_seqs))
+        print('%d sequences.' % len(seen_seqs))
     return seq_list
 
 def seqs_in_cluster_list(list):
