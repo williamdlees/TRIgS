@@ -202,7 +202,7 @@ def read_seqs(infile):
         seq_list.append((seq, seq_record.id))
     
     if verbose:
-        print('%d sequences.' % len(seen_seqs))
+        print('%d sequences.' % len(seq_list))
     return seq_list
 
 def seqs_in_cluster_list(list):
