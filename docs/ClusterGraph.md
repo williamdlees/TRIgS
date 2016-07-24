@@ -2,6 +2,8 @@
 
 ClusterGraph takes a cluster file produced by ClusterSeqs or by [CD-HIT](http://weizhongli-lab.org/cd-hit/ "CD-HIT") and produces edge and vertex csv files suitable for import by [Gephi](https://gephi.org/ "Gephi"). 
 
+ClusterGraph requires [python-Levenshtein](https://pypi.python.org/pypi/python-Levenshtein).
+
 ## Usage ##
 
      ClusterGraph.py [-h] [-l LIMIT]
