@@ -23,7 +23,7 @@ import math
 import sys
 import argparse
 from Bio import SeqIO
-import LevenshteinMaxDist as ld
+import Levenshtein as ld
 import re
 import igraph
 import subprocess
