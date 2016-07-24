@@ -31,4 +31,4 @@ timelinefile - list of clusters, showing the number of members at each sample ti
 
 ## Testing ##
 
-`testfiles/Test_Commands.bat` exercises the script with sample data. The -c option provides independent confirmation that the partitioning has been successful.
+`testfiles/Test_Commands.bat` exercises the script with sample data. The -c option provides independent confirmation that the partitioning of any data set has been successful.
