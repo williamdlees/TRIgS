@@ -15,7 +15,7 @@ Online versions of some tools are available on our [website](http://cimm.ismb.lo
 
 [**ClusterGraph**](docs/ClusterGraph.md) converts output from ClusterSeqs or [CD-HIT](http://weizhongli-lab.org/cd-hit/) into a form that can be imported by [Gephi](https://gephi.org/).
 
-![Image](https://rawgit.com/williamdlees/BioTools/master/docs/clusters.png)
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/clusters.png" width="200">
 <br>Example Gephi output, produced from the analysis of an NGS-based heavy-chain repertoire
 
 [**AnnotateTreeCmd**](docs/AnnotateTree.md) creates annotated lineage trees and sequence alignments showing the point at which amino acid substitutions occur. It uses [PHYLIP’s dnaml](http://evolution.genetics.washington.edu/phylip.html) for ancestral reconstruction. Sequence numbering can be defined by the user, for example to match the numbering of a crystal structure, or to match a standard numbering scheme. If the sequences represent a B-cell clonal lineage, additional reports relating to variation in the CDRs can be produced.
