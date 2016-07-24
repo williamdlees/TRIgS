@@ -7,6 +7,8 @@ Online versions of some tools are available on our [website](http://cimm.ismb.lo
 [Tools for Junction Parsing and Results Manipulation](#tools-for-junction-parsing-and-results-manipulation)
 [Tools for FASTA file Manipulation](#tools-for-fasta-file-manipulation)
 
+[This document](docs/Example%20Analysis%20Pipeline.pdf) illustrates the use of Trigs in combination with other tools in a recent analysis.
+
 ## Tools for Clonal Analysis
 
 [**ClusterSeqs**](docs/ClusterSeqs.md) partitions sequences into clusters using single-linkage clustering. In a recent analysis, 426,000 junction sequences were clustered in just under 90 minutes. [**NeighbourDist**](docs/NeighbourDist.md) analyses nearest-neighbour distances to guide partitioning, and can down-sample to handle large datasets.
