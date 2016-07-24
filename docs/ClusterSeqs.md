@@ -4,7 +4,7 @@ ClusterSeqs partitions a set of sequences into clusters, such that all sequences
 
 Typically, clustering methods first create an exhaustive distance matrix, exhaustively enumerating the pairwise distances between items to be clustered. Once this is in place, there are efficient techniques for clustering, however the distance matrix can take a long time to compute. ClusterSeqs clusters chunks of sequences, and then merges the chunks. Because in NGS analyses the number of clusters is generally much smaller than the number of sequences, this can greatly reduce the number of distances that need to be computed (although the performance of the method will depend on the nature of the clusters).
 
-ClusterSeqs requires [SciPy](http://scipy.org).
+ClusterSeqs requires [SciPy](http://scipy.org) and [python-Levenshtein](https://pypi.python.org/pypi/python-Levenshtein).
 
 ## Usage ##
 
