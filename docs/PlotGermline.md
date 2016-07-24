@@ -2,6 +2,8 @@
 
 PlotGermline will read one or more IMGT/IgBLASTPlus format files, and plot a histogram for each one, showing relative usage of the requested germline gene. If duplicate records have been consolidated, it can take account of a count in the ID field indicating the number of duplicates.
 
+PlotGermline requires [NumPy](http://www.numpy.org) and [matplotlib](http://matplotlib.org).
+
 ## Usage ##
 
      PlotGermline.py [-h] [-t TITLES] [-l LIMIT] [-s SAVE] [-d DUPHEADER]
