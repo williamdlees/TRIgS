@@ -3,9 +3,9 @@ A collection of bioinformatics tools for sequence analysis, with an emphasis on 
 
 Online versions of some tools are available on our [website](http://cimm.ismb.lon.ac.uk/pat).
 
-[Tools for Clonal Analysis](#tools-for-clonal-analysis)
-[Tools for Junction Parsing and Results Manipulation](#tools-for-junction-parsing-and-results-manipulation)
-[Tools for FASTA file Manipulation](#tools-for-fasta-file-manipulation)
+[Tools for Clonal Analysis](#tools-for-clonal-analysis)<br>
+[Tools for Junction Parsing and Results Manipulation](#tools-for-junction-parsing-and-results-manipulation)<br>
+[Tools for FASTA file Manipulation](#tools-for-fasta-file-manipulation)<br>
 
 [This document](docs/Example%20Analysis%20Pipeline.pdf) illustrates the use of Trigs in combination with other tools in a recent analysis.
 
