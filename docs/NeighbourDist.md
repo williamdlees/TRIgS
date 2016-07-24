@@ -2,6 +2,8 @@
 
 NeighbourDist plots the distribution of nearest-neighbour distances across a set of CDR3 sequences. Where these are taken from a clonally expanded sequence set, the distribution will typically show two peaks: the minimum between these peaks indicates a suitable identity threshold for clustering. The field IMGT-CDR3 is used, and is required to be present in the file. It may contain either amino acid or nucleotide sequences. The command also plots the distribution of CDR3 lengths. For large data sets, the analysis can be restricted to a random sample.
 
+NeighbourDist requires [NumPy](http://www.numpy.org), [matplotlib](http://matplotlib.org) and [python-Levenshtein](https://pypi.python.org/pypi/python-Levenshtein).
+
 ## Usage ##
 
      NeighbourDist.py [-h] [-l LIMIT] [-v] [-i] [-g LENGTH_LIMS]
