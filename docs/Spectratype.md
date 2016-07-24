@@ -2,6 +2,9 @@
 
 Spectratype will read one or more IMGT/IgBLASTPlus format files, and plot a histogram for each one, showing the relative frequency of each CDR3 length. The field IMGT-CDR3 is used, and is required to be present in the file. It may contain either amino acid or nucleotide sequences. If duplicate records have been consolidated, the script can take account of a count in the ID field indicating the number of duplicates.
 
+SpectraType requires [NumPy](http://www.numpy.org) and [matplotlib](http://matplotlib.org).
+
+
 ## Usage ##
 
      Spectratype.py [-h] [-u] [-t TITLES] [-c COLS] [-d DUPHEADER] [-s SAVE]
