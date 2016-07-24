@@ -55,11 +55,11 @@ A collection of small utilities that have proved useful in analysis pipelines.
 
 [**FastaMatch**](docs/FastaTools.md/#fastamatch) filters records whose sequence or ID match a regular expression.
 
-[**FastaSample**](docs/FastaSample.md/#fastasample) extracts a random sample of records.
+[**FastaSample**](docs/FastaTools.md/#fastasample) extracts a random sample of records.
 
-[**FastaUniq**](docs/FastaUniq.md/#fastauniq) removes duplicate records (identified by ID).
+[**FastaUniq**](docs/FastaTools.md/#fastauniq) removes duplicate records (identified by ID).
 
-[**FastaSampleUniq**](docs/FastaSampleUniq.md/#fastasampleuniq) counts the number of unique sequences in a set of samples, accounting for duplicates noted in the header.
+[**FastaSampleUniq**](docs/FastaTools.md/#fastasampleuniq) counts the number of unique sequences in a set of samples, accounting for duplicates noted in the header.
 
 ## Installation and Usage
 
