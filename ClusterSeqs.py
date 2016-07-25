@@ -250,8 +250,8 @@ def get_clusters(seq_list, cutoff):
     t2 = time.time()
     clustertime = t2 - t1
 
-    if verbose:
-        print('pool time %0.2f cluster time %0.2f' % (pooltime, clustertime))
+    #if verbose:
+    #    print('pool time %0.2f cluster time %0.2f' % (pooltime, clustertime))
 
     clusters = []
     for i in range(len(set(cs))):
@@ -462,27 +462,25 @@ def check_clusters(seq_list, all_clusters, cutoff):
         elif v > 2:
             print('Error: sequence %s appears in all_clusters more than once.' % k)
             
-    # Each sequence in a cluster has a nearest neighbour within the cutoff distance
+    # The cluster forms a connected network with each sequence in a cluster having a nearest neighbour within the cutoff distance
     print('Checking cluster membership.')
+    t0 = time.time()
+    i = 0
     for cluster, max_len, min_len in all_clusters:
+        # push each cluster through get_clusters and check it results in a single cluster
+        # one could argue that this isn't strictly an independent check, but the underlying algorithm is in scipy
+        # this does check that merging across chunks has happened correctly
         if len(cluster) > 1:
-            for i in range(len(cluster)):
-                seq1, id1 = cluster[i]
-                belongs = False
-                for j in range(len(cluster)):
-                    seq2, id2 = cluster[j]
-                    cut = int(cutoff * min(len(seq1), len(seq2)))
-                    if hamming:
-                        if i != j and ld.hamming(seq1, seq2) <= cut:
-                            belongs = True
-                            break
-                    else:
-                        if i != j and ld.distance(seq1, seq2, cut) <= cut:
-                            belongs = True
-                            break
-                if not belongs:
-                    print('Error: sequence %s (id %s) has no sufficiently near neighbours in its cluster.' % (cluster[i]))
-                
+            res = get_clusters(cluster, cutoff)
+            if len(res) != 1:
+                print('Error: cluster with sequence %s (id %s) is partitioned into %d clusters by further application of get_cluster.' % (cluster[0], len(res)))
+
+        i += 1
+        t1 = time.time()
+        if t1 - t0 > 10:
+            print 'Checking cluster %d\n' % i
+            t0 = time.time()
+
     # No clusters are mergeable
     print('Checking that clusters are distinct.')
     for i in range(len(all_clusters)):
