@@ -39,7 +39,7 @@ Online versions of some tools are available on our [website](http://cimm.ismb.lo
 
 [**IgBLASTPlus**](docs/IgBLASTPlus.md) processes the output from NCBI's [IgBLAST](http://www.ncbi.nlm.nih.gov/igblast/), providing a full junction analysis and summarising results in an [IMGT](http://imgt.org)-style tab-separated format. This makes it possible to use an in-house copy of IgBLAST in place of IMGT High-V Quest. IgBLAST analyses of 3-4 million records will typically complete in under an hour. 
 
-The following tools will work on tab-separated files such as those produced by [IgBLASTPlus](docs/IgBLASTPlus.md), [IMGT](http://imgt.org), or [CHANGE-O](http://clip.med.yale.edu/changeo):
+The following tools will work on tab- or comma- separated files such as those produced by [IgBLASTPlus](docs/IgBLASTPlus.md), [IMGT](http://imgt.org), or [CHANGE-O](http://clip.med.yale.edu/changeo):
 
 [**ExtractFromIMGT**](docs/ExtractFromIMGT.md) is a flexible tool for extracting sequences in FASTA format. Options allow filtering by germlines, restriction of sequences to specific regions, and so on.
 
