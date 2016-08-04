@@ -42,6 +42,7 @@ def main(argv):
     args = parser.parse_args()
 
     recs = []
+    seqs = {}
     fasta_recs = 0
 
     for rec in SeqIO.parse(args.infile, "fasta"):
@@ -58,8 +59,9 @@ def main(argv):
             count = 1
         for _ in range(count):
             recs.append(str(rec.seq))
+        seqs[str(rec.seq)] = 1
             
-    print 'Input file contains %d FASTA records representing %d reads.' % (fasta_recs, len(recs))
+    print 'Input file contains %d FASTA records representing %d reads and %d unique sequences.' % (fasta_recs, len(recs), len(seqs))
     
     sample_size = int(args.sample_size)
     if sample_size > len(recs):
@@ -76,7 +78,7 @@ def main(argv):
         results.append(len(uniques))
 
     res = np.array(results)
-    print 'mean number of unique values: %0.2f' % np.mean(res)
+    print 'mean number of unique values in sample: %0.2f' % np.mean(res)
     print 'standard deviation: %0.2f' % np.std(res)
     print '95 precent confidence limits: +/- %0.2f' % (1.96*np.std(res))
 

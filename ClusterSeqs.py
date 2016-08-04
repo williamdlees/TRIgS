@@ -202,7 +202,7 @@ def read_seqs(infile, unique):
     seqs = {}
     for seq_record in SeqIO.parse(infile, "fasta"):
         seq = str(seq_record.seq)
-        if unique is None or seq not in seqs:
+        if not unique or seq not in seqs:
             seq_list.append((seq, seq_record.id))
             seqs[seq] = 1
             
