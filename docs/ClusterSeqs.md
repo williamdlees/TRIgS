@@ -8,7 +8,7 @@ ClusterSeqs requires [SciPy](http://scipy.org) and [python-Levenshtein](https://
 
 ## Usage ##
 
-     ClusterSeqs.py [-h] [-l LIMIT] [-m] [-t THREADS] [-c] [-d] [-v]
+     ClusterSeqs.py [-h] [-l LIMIT] [-m] [-t THREADS] [-c] [-d] [-u] [-v]
                     infile outfile timelinefile cutoff labels
 
 Argument|Meaning
@@ -21,6 +21,7 @@ Argument|Meaning
 `[-l LIMIT]`|Randomly select at most LIMIT sequences from the file
 `[-c]`|Perform an independent check after processing, to confirm that the clusters have been correctly formed.
 `[-d]`|Dump the cluster structure to clusters.pickle for debug purposes
+`[-u]`| Remove duplicate sequences: only the first is retained
 `[-v]`|Display verbose status output
 `[-h]`|Provide a help message and exit
 
