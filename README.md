@@ -47,6 +47,8 @@ The following tools will work on tab- or comma- separated files such as those pr
 
 [**Spectratype**](docs/Spectratype.md) creates histograms showing CDR3 length distribution.
 
+[**ClusterExtract**](docs/ClusterExtract.md) uses the sequence IDs in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file to extract all records corresponding to a nominated cluster.
+
 ## Tools for FASTA file Manipulation
 
 A collection of small utilities that have proved useful in analysis pipelines. 
