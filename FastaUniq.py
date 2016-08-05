@@ -44,7 +44,7 @@ def main(argv):
         i += 1
 
     SeqIO.write(recs.values(), args.outfile, "fasta")
-    print('%d duplicates removed, leaving %d records.' % i-len(recs), len(recs))
+    print('%d duplicates removed, leaving %d records.' (% i-len(recs), len(recs)))
         
 if __name__=="__main__":
     main(sys.argv)
