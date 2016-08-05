@@ -34,7 +34,7 @@ def main(argv):
     recs = {}
     i = 0
     for rec in SeqIO.parse(args.infile, "fasta"):
-        rec[rec.id] = rec
+        recs[rec.id] = rec
         
     for id in recs.keys():
         SeqIO.write(recs[id], args.outfile, "fasta")
