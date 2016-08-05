@@ -28,7 +28,7 @@ def main(argv):
     parser = argparse.ArgumentParser(description='If identical records are found, remove all but the first.')
     parser.add_argument('infile', nargs='?', type=argparse.FileType('r'), default = sys.stdin)
     parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'), default = sys.stdout)
-    parser.add_argument('-s, --seq', help='remove records with an identical sequemce (default is to remove records with identical IDs)', action="store_true")
+    parser.add_argument('--seq', help='remove records with an identical sequemce (default is to remove records with identical IDs)', action="store_true")
 
     args = parser.parse_args()
 
