@@ -91,7 +91,7 @@ def main(argv):
     print('Written cluster files after %d minutes' % ((time.time()-fulltime)/60))
 
     if check:
-        check_clusters(seq_list, all_clusters, cutoff)
+        check_clusters(seq_list, all_clusters, cutoff, unique)
 
     print('Finished after %d minutes' % ((time.time()-fulltime)/60))
 
@@ -414,7 +414,7 @@ def write_timeline(cluster_list, timelinefile, labels):
         times = [str(x) for x in range(len(labels))]        
         fo.write('#times %s\n' % ' '.join(times))
         sums = {}
-        index = 1
+        index = 0
         for cluster, max_len, min_len in cluster_list:
             row = {}
             for seq,id in cluster:
@@ -422,30 +422,30 @@ def write_timeline(cluster_list, timelinefile, labels):
                     if label in id:
                         row[label] = 1 + row.get(label, 0)
                         sums[label] = 1 + sums.get(label, 0)
-            if len(row) > 1:
-                counts = []
-                for label in labels:
-                    if label in row:
-                        counts.append(str(row[label]))
-                    else:
-                        counts.append('0')
-                fo.write('%s_%d %s\n' % ('C', index, ' '.join(counts)))
-                index += 1
+            counts = []
+            for label in labels:
+                if label in row:
+                    counts.append(str(row[label]))
+                else:
+                    counts.append('0')
+            fo.write('%s_%d %s\n' % ('Cluster', index, ' '.join(counts)))
+            index += 1
         counts = []
         for label in labels:
             counts.append(str(sums[label]) if label in sums else '0')
         fo.write('#sums %s\n' % ' '.join(counts))
         
-def check_clusters(seq_list, all_clusters, cutoff):
-    # Sequences in seq_list are unique
+def check_clusters(seq_list, all_clusters, cutoff, unique):
     print('Checking for unique input sequences')
     seqs = {}
     for seq in seq_list:
         seqs[seq[0]] = seqs.get(seq, 0) + 1
-        
-    for k, v in seqs.items():
-        if v != 1:
-            print('Error: sequence %s appears in seq_list more than once.' % k)
+
+    # Sequences in seq_list are unique
+    if unique:            
+        for k, v in seqs.items():
+            if v != 1:
+                print('Error: sequence %s appears in seq_list more than once.' % k)
             
     # There is a one-to-one correspondence between sequences in seq_list and sequences in all_clusters
     print('Checking for one-to-one correspondence between input and output sequences.')
@@ -459,7 +459,7 @@ def check_clusters(seq_list, all_clusters, cutoff):
     for k, v in seqs.items():
         if v < 2:
             print('Error: sequence %s appears in seq_list but not in all_clusters.' % k)
-        elif v > 2:
+        elif unique and v > 2:
             print('Error: sequence %s appears in all_clusters more than once.' % k)
             
     # The cluster forms a connected network with each sequence in a cluster having a nearest neighbour within the cutoff distance
