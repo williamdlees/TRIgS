@@ -15,7 +15,7 @@ Online versions of some tools are available on our [website](http://cimm.ismb.lo
 
 [**ClusterGraph**](docs/ClusterGraph.md) converts output from ClusterSeqs or [CD-HIT](http://weizhongli-lab.org/cd-hit/) into a form that can be imported by [Gephi](https://gephi.org/).
 
-[**ClusterStats**](docs/ClusterExtract.md/#clusterstats) uses the sequence IDs in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file to extract all records corresponding to a nominated cluster.
+[**ClusterStats**](docs/ClusterExtract.md/#clusterstats) produces some overview statistics of samples clustered in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file.
 
 <img src="https://rawgit.com/williamdlees/BioTools/master/docs/clusters.png" width="200">
 <br>Example Gephi output, produced from the analysis of an NGS-based heavy-chain repertoire
@@ -49,7 +49,7 @@ The following tools will work on tab- or comma- separated files such as those pr
 
 [**Spectratype**](docs/Spectratype.md) creates histograms showing CDR3 length distribution.
 
-[**ClusterExtract**](docs/ClusterExtract.md/#clusterextract) produces some overview statistics on the clustering of samples defined in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file.
+[**ClusterExtract**](docs/ClusterExtract.md/#clusterextract) uses the sequence IDs in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file to extract all records corresponding to a nominated cluster.
 
 ## Tools for FASTA file Manipulation
 
