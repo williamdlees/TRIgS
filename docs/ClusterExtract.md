@@ -38,7 +38,7 @@ Report statistics of a cluster file produced by CD-HIT or ClusterSeqs.py, broken
 ids uniquely, and are used to identify sequences from multiple samples concatenated into the same FASTA file.
 Typically they will be suffixes or prefixes.
 
-In the output, `Span` denotes the number of samples that have representatives within a given cluster.
+In the output, `Unique` clusters are those that contain representatives from just one sample. `Shared` contain representatives from multiple samples. `Span` denotes the number of samples that have representatives within a given cluster.
 
 Example output:
 
