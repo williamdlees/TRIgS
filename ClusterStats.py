@@ -130,7 +130,7 @@ def main(argv):
     cluster_spans = np.array(cluster_spans)
     
     print 'Number of clusters with more than one member, and at least one member in one of the nominated samples: %d' % cluster_count
-    print 'Largest cluster size in that set: %d' % max(cluster_sizes) % (cluster_spans > 1).sum()
+    print 'Largest cluster size in that set: %d' % max(cluster_sizes)
     
     print '\nSample\tUnique\tShared\tTotal\tMax Size\tGini Index'
     for s in sample_names:
