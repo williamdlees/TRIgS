@@ -61,70 +61,34 @@ def main(argv):
     alpha_sort = args.alpha_sort
     dupheader = args.dupheader
 
-    plt.figure(figsize=(16,4*nrows))
-    plot_number = 1
-    for (infile, title) in zip(infiles, titles):
-        plot_file(infile, detail, field, limit, alpha_sort, dupheader, frequency, ymax, nrows, ncols, plot_number, title)
-        plot_number += 1
-    plt.tight_layout()
-    if outfile:
-        plt.savefig(outfile)
-    else:
-        plt.show()
+    stats = []
+    for infile in infiles:
+        stats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, limit))
 
-def plot_file(infile, detail, field, limit, alpha_sort, dupheader, frequency, ymax, nrows, ncols, plot_number, title):
-    germ_usage = {}
-
-    with open(infile, 'r') as fi:
-        ln = fi.readline()
-        sep = ("\t" if "\t" in ln else ",")
-        fi.seek(0)
-        reader = csv.DictReader(fi, delimiter=sep)
-        for row in reader:
-            if 'unproductive' not in row['Functionality'] and field in row and row[field] != '':
-                germs = to_germ(row[field], detail)           
-                for germ in germs:
-                    germ_usage[germ] = germ_usage.get(germ, 0) + (get_size(row['Sequence ID'], dupheader) if dupheader else 1)
-
-    vals = {}
-    total_reads = 0
-    for k,v in germ_usage.items():
-        total_reads += v
-        if v in vals:
-            vals[v].append(k)
+    if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
+        plt.figure(figsize=(16,4*nrows))
+        plot_number = 1
+        for (stat, title) in zip(stats, titles):
+            (heights, legends) = stat
+            plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title)
+            plot_number += 1
+        plt.tight_layout()
+        if outfile:
+            plt.savefig(outfile)
         else:
-            vals[v] = [k]
-        
-    heights = []
-    legends = []
+            plt.show()
+    else:
+        with open(outfile, 'wb') as fo:
+            writer = csv.writer(fo)
+            for (stat, title) in zip(stats, titles):
+                (heights, legends) = stat
+                writer.writerow([''])
+                writer.writerow([title])
+                writer.writerow(['Germline'] + legends)
+                writer.writerow(['Occurrences'] + heights)
 
-    indeces = sorted(vals.keys(), reverse=True)
-    
-    if limit:
-        indeces = indeces[:limit]
 
-    for i in indeces:
-        for val in vals[i]:
-            heights.append(i)
-            legends.append(val)
-            
-    if alpha_sort:
-        # Juggle the order, now that we know which values we'll be plotting
-        germ_usage = {}
-        for z in zip(legends, heights):
-            germ_usage[z[0]] = z[1]
-
-        heights = []
-        legends = []
-        
-        for k in sorted(germ_usage.keys()):
-            heights.append(germ_usage[k])
-            legends.append(k)
-
-    if frequency:
-        for i in range(len(heights)):
-            heights[i] = float(heights[i]) / total_reads
-        
+def plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title):
     y_pos = np.arange(len(heights))
     plt.subplot(nrows, ncols, plot_number)
     plt.bar(y_pos, heights,  alpha=0.5)
@@ -137,6 +101,55 @@ def plot_file(infile, detail, field, limit, alpha_sort, dupheader, frequency, ym
     else:
         plt.ylabel('Reads')
     plt.tight_layout()
+
+
+def determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, limit):
+    germ_usage = {}
+    with open(infile, 'r') as fi:
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
+        for row in reader:
+            if 'unproductive' not in row['Functionality'] and field in row and row[field] != '':
+                germs = to_germ(row[field], detail)
+                for germ in germs:
+                    germ_usage[germ] = germ_usage.get(germ, 0) + (
+                    get_size(row['Sequence ID'], dupheader) if dupheader else 1)
+    vals = {}
+    total_reads = 0
+    for k, v in germ_usage.items():
+        total_reads += v
+        if v in vals:
+            vals[v].append(k)
+        else:
+            vals[v] = [k]
+    heights = []
+    legends = []
+    indeces = sorted(vals.keys(), reverse=True)
+    if limit:
+        indeces = indeces[:limit]
+    for i in indeces:
+        for val in vals[i]:
+            heights.append(i)
+            legends.append(val)
+    if alpha_sort:
+        # Juggle the order, now that we know which values we'll be plotting
+        germ_usage = {}
+        for z in zip(legends, heights):
+            germ_usage[z[0]] = z[1]
+
+        heights = []
+        legends = []
+
+        for k in sorted(germ_usage.keys()):
+            heights.append(germ_usage[k])
+            legends.append(k)
+    if frequency:
+        for i in range(len(heights)):
+            heights[i] = float(heights[i]) / total_reads
+    return heights, legends
+
 
 # Convert germline field to a list with the requested amount of detail
 

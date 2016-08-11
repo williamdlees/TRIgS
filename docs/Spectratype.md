@@ -25,7 +25,7 @@ Argument|Meaning
 
 ## Output Files ##
 
-If the -s option is specified, the format will be determined by the extension of the specified output file(.pdf, .png, .jpg).
+If the -s option is specified, the format will be determined by the extension of the specified output file(.pdf, .png, .jpg). If the extension is .csv, a csv file will be produced instead of a plot.
 
 ## Testing ##
 

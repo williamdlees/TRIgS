@@ -54,32 +54,38 @@ def main(argv):
     if len(infiles) % ncols != 0:
         nrows += 1
 
-    plt.figure(figsize=(16,4*nrows))
-    plot_number = 1
+    lengths = []
     for infile in infiles:
-        title = titles[plot_number-1] if titles else None
-        plot_file(infile, xmax, ymax, args.unique, title, nrows, ncols, plot_number, dupheader)
-        plot_number += 1
-    plt.tight_layout()
-    if outfile:
-        plt.savefig(outfile)
+        lengths.append(determine_stats(dupheader, infile, args.unique))
+        
+    if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
+        plt.figure(figsize=(16,4*nrows))
+        plot_number = 1
+        for length in lengths:
+            title = titles[plot_number-1] if titles else None
+            plot_file(length, xmax, ymax, title, nrows, ncols, plot_number)
+            plot_number += 1
+        plt.tight_layout()
+        if outfile:
+            plt.savefig(outfile)
+        else:
+            plt.show()
     else:
-        plt.show()
+        minlength = 9999
+        maxlength = 0
+        for length in lengths:
+            maxlength = max(maxlength, max([i for i in range(len(length)) if length[i] > 0]))
+            minlength = min(minlength, min([i for i in range(len(length)) if length[i] > 0]))
+
+        with open(outfile, 'wb') as fo:
+            writer = csv.writer(fo)
+            writer.writerow(['Length'] + range(minlength, maxlength))
+            ititle = iter(titles) if titles else iter(infiles)
+            for length in lengths:
+                writer.writerow([next(ititle)] + list(length[minlength:maxlength]))
 
 
-def plot_file(infile, xmax, ymax, unique, title, nrows, ncols, plot_number, dupheader):
-    seen = {}
-    with open(infile, 'r') as fi:
-        ln = fi.readline()
-        sep = ("\t" if "\t" in ln else ",")
-        fi.seek(0)
-        reader = csv.DictReader(fi, delimiter=sep)
-        lengths = np.zeros(600)
-        for row in reader:
-            if 'unproductive' not in row['Functionality'] and row['CDR3-IMGT'] and (not unique or row['CDR3-IMGT'] not in seen):
-                lengths[len(row['CDR3-IMGT'])] += (get_size(row['Sequence ID'], dupheader) if dupheader else 1)
-                seen[row['CDR3-IMGT']] = 1
-
+def plot_file(lengths, xmax, ymax, title, nrows, ncols, plot_number):
     for max in range(599, 0, -1):
         if lengths[max] > 0:
             break
@@ -93,6 +99,23 @@ def plot_file(infile, xmax, ymax, unique, title, nrows, ncols, plot_number, duph
     if title:
         plt.xlabel(title)
     plt.tight_layout()
+
+
+def determine_stats(dupheader, infile, unique):
+    seen = {}
+    with open(infile, 'r') as fi:
+        ln = fi.readline()
+        sep = ("\t" if "\t" in ln else ",")
+        fi.seek(0)
+        reader = csv.DictReader(fi, delimiter=sep)
+        lengths = np.zeros(600)
+        for row in reader:
+            if 'unproductive' not in row['Functionality'] and row['CDR3-IMGT'] and (
+                not unique or row['CDR3-IMGT'] not in seen):
+                lengths[len(row['CDR3-IMGT'])] += (get_size(row['Sequence ID'], dupheader) if dupheader else 1)
+                seen[row['CDR3-IMGT']] = 1
+    return lengths
+
 
 # Find duplicate size, or return 1
 
