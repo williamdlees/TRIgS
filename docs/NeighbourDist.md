@@ -7,7 +7,7 @@ NeighbourDist requires [NumPy](http://www.numpy.org), [matplotlib](http://matplo
 ## Usage ##
 
      NeighbourDist.py [-h] [-l LIMIT] [-v] [-i] [-g LENGTH_LIMS]
-                      [-d DIST_LIMS]
+                      [-d DIST_LIMS] [-c]
                       infile outprefix
 
 Argument|Meaning
@@ -20,11 +20,12 @@ Argument|Meaning
 `[-g LENGTH_LIMS]`|4 comma-separated numbers specifying ranges for the length distribution plot (xmin,xmax,ymin,ymax)
 `[-d DIST_LIMS]`|4 comma-separated numbers specifying ranges for the nearest neighbour plot (xmin,xmax,ymin,ymax)
 `[-h]`|Provide a help message and exit
+`[-c]`|Provide comma separated files rather than plots
 
 ## Output Files ##
 
-(prefix)_CDR3_length.pdf - length distribution
-(prefix)_CDR3_min_dist.pdf - nearest neighbour distribution
+(prefix)_CDR3_length.pdf(csv) - length distribution
+(prefix)_CDR3_min_dist.pdf(csv) - nearest neighbour distribution
 
 ## Testing ##
 
