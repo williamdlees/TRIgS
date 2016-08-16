@@ -88,18 +88,23 @@ def distance(query, template, verbose, vregion):
             elif len(q) > len(t):
                 q = q[0-len(t):]
             assert(len(q) == len(t))
-        elif vregion and field == 'FR3-IMGT':
-            if len(q) < len(t):
-                t = t[:len(q)]
-            elif len(q) > len(t):
-                q = q[:len(t)]
-            assert (len(q) == len(t))
-        elif (not vregion) and field == 'FR4-IMGT':
-            if len(q) < len(t):
-                t = t[:len(q)]
-            elif len(q) > len(t):
-                q = q[:len(t)]
-            assert(len(q) == len(t))
+        elif field == 'FR3-IMGT':
+            if vregion:
+                if len(q) < len(t):
+                    t = t[:len(q)]
+                elif len(q) > len(t):
+                    q = q[:len(t)]
+                assert (len(q) == len(t))
+        elif field == 'FR4-IMGT':
+            if vregion:
+                q = ''
+                t = ''
+            else:
+                if len(q) < len(t):
+                    t = t[:len(q)]
+                elif len(q) > len(t):
+                    q = q[:len(t)]
+                assert(len(q) == len(t))
 
         (tot, i, alignment) = field_distance(q, t)
         total += tot
