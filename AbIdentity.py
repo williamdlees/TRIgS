@@ -62,7 +62,7 @@ def main(argv):
         quit()
 
     count = 0
-    with open(args.datafile, 'r') as fi, open(outfile, 'w') as fo:
+    with open(args.datafile, 'r') as fi, open(outfile, 'wb') as fo:
         writer = csv.writer(fo)
         writer.writerow(['SequenceId', 'TargetDist', 'GermlineDist'])
         reader = csv.DictReader(fi, delimiter='\t')
