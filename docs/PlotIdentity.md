@@ -2,7 +2,7 @@
 
 Identity/Divergence plots show, for a set of sampled sequences, their divergence from the inferred germline and identity to a target sequence of interest:
 
-<img src="https://rawgit.com/williamdlees/BioTools/master/docs/identity.png" width="200">
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/identity.png" width="500">
 <br>Example Identity/Divergence plot, produced from the analysis of an NGS-based heavy-chain repertoire.
 
 
