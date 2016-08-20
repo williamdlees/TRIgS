@@ -51,6 +51,8 @@ The following tools will work on tab- or comma- separated files such as those pr
 
 [**AbIdentity**](docs/AbIdentity.md) calculates sequence identities compared to a target sequence and a germline.
 
+[**PlotIdentity**](docs/PlotIdentity.md) creates repertoire identity/divergence plots.
+
 [**ClusterExtract**](docs/ClusterExtract.md/#clusterextract) uses the sequence IDs in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file to extract all records corresponding to a nominated cluster.
 
 ## Tools for FASTA file Manipulation
