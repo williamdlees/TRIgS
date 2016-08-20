@@ -9,3 +9,5 @@ python ../PlotGermline.py kappa_n_A1_1000.txt,kappa_n_A1_1000.txt,kappa_n_A1_100
 python ../Spectratype.py kappa_n_A1_1000.txt,kappa_n_A1_1000.txt,kappa_n_A1_1000.txt -t "A1,A2,A3" -c 2 -u -x 100 -s kappa_CDR3_length.pdf
 
 python ../AbIdentity.py sample_heavy_n.txt H122 sample_intermediates_n.txt "M93173|IGHV1S40*01|Oryctolagus" IGHV1S40_n.txt intermediates.csv
+
+python ../PlotIdentity.py H1-36_repertoire.csv -p "H1-36_ab.csv,rv/m10/lr,H1-36_germline.csv,b+/m20/lb,H1-36_family.csv,ro/m4" -my 85 -mx 20 -c autumn_r -g white -b
