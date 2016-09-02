@@ -26,30 +26,39 @@ import csv
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import itertools
 
 def main(argv):
     parser = argparse.ArgumentParser(description='Read an IgBlastPlus file and plot the contained CDR3 lengths.')
-    parser.add_argument('-u', '--unique', help='only count unique sequences', action='store_true')
     parser.add_argument('infiles', help='input files, separated by commas (IgBLASTPlus format, nt or aa)')
-    parser.add_argument('-t', '--titles', help='titles for each plot, separated by commas')
+    parser.add_argument('-b', '--barcolour', help='colour or list of colours for bars')
     parser.add_argument('-c', '--cols', help='Number of columns for plot')
     parser.add_argument('-d', '--dupheader', help='Prefix for duplicate count, eg "DUPCOUNT=" for Presto')
+    parser.add_argument('-g', '--gradientfill', help='fill bars with a gradiented colour', action='store_true')    
+    parser.add_argument('-gh', '--grid_horizontal', help='horizontal grid lines', action='store_true')
+    parser.add_argument('-gv', '--grid_vertical', help='vertical grid lines every n bars')
     parser.add_argument('-s', '--save', help='Save output to file (as opposed to interactive display)')
+    parser.add_argument('-t', '--titles', help='titles for each plot, separated by commas')
+    parser.add_argument('-u', '--unique', help='only count unique sequences', action='store_true')
+    parser.add_argument('-w', '--width', help='relative bar width (number between 0 and 1)')
+    parser.add_argument('-xmax', '--xmax', help='Max x-value to use on all charts')
+    parser.add_argument('-xmin', '--xmin', help='Min x-value to use on all charts')
     parser.add_argument('-y', '--ymax', help='Max y-value to use on all charts')
-    parser.add_argument('-x', '--xmax', help='Max x-value to use on all charts')
     args = parser.parse_args()
     infiles = args.infiles.split(',')
     titles = args.titles.split(',') if args.titles else None
     ncols = int(args.cols) if args.cols else 1
-    xmax = float(args.xmax) if args.xmax else None
+    xmin = int(args.xmin) if args.xmin else 0
+    xmax = int(args.xmax) if args.xmax else None
     ymax = float(args.ymax) if args.ymax else None
     outfile = args.save if args.save else None
     dupheader = args.dupheader
+    bar_width = float(args.width) if args.width else 1.0
+    mapcolour = args.barcolour if args.barcolour else 'blue'
+    mapcolour = mapcolour.split(',')
+    grid_vertical = int(args.grid_vertical) if args.grid_vertical else False
 
-    if titles and len(titles) != len(infiles):
-        print 'Number of titles must match number of files!'
-        exit()
-    
     nrows = len(infiles) / ncols
     if len(infiles) % ncols != 0:
         nrows += 1
@@ -59,11 +68,10 @@ def main(argv):
         lengths.append(determine_stats(dupheader, infile, args.unique))
         
     if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
-        plt.figure(figsize=(16,4*nrows))
+        plt.figure(figsize=(8*ncols,4*nrows))
         plot_number = 1
-        for length in lengths:
-            title = titles[plot_number-1] if titles else None
-            plot_file(length, xmax, ymax, title, nrows, ncols, plot_number)
+        for (length, title, colour) in zip(lengths, itertools.cycle(titles), itertools.cycle(mapcolour)):
+            plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
             plot_number += 1
         plt.tight_layout()
         if outfile:
@@ -85,20 +93,79 @@ def main(argv):
                 writer.writerow([next(ititle)] + list(length[minlength:maxlength]))
 
 
-def plot_file(lengths, xmax, ymax, title, nrows, ncols, plot_number):
-    for max in range(599, 0, -1):
-        if lengths[max] > 0:
-            break
+def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical):
+    if not xmax:
+        for xmax in range(len(lengths)-1, 0, -1):
+            if lengths[xmax] > 0:
+                break
     
-    plt.subplot(nrows, ncols, plot_number)
-    if ymax:
-        plt.ylim(0, ymax)
-    if xmax:
-        plt.xlim(0, xmax)
-    plt.bar(np.arange(max+1), lengths[:max+1])
+    ax = plt.subplot(nrows, ncols, plot_number)
+    ax.tick_params(direction='out', top=False, right=False)
+
     if title:
         plt.xlabel(title)
+
+    bar_pos = np.arange(xmax + 1)
+    labels = ['%d' % x for x in bar_pos]
+    plt.xticks(bar_pos+0.5, labels)
+    plt.ylabel('Reads')
+
+    if ymax:
+        plt.ylim(0, ymax)
+    if xmax or xmin != 0:
+        plt.xlim(xmin, xmax)
+
+    if bar_width < 1.:
+        bar_pos = bar_pos + (1 - bar_width) / 2.
+
+    if grid_horizontal:
+        plt.grid(which='major', axis='y', c='black', linestyle='-', alpha=0.6, zorder=1)
+
+    if gradientfill:
+        gbar(bar_pos, lengths, mapcolour, width=bar_width)
+    else:
+        plt.bar(bar_pos, lengths, width=bar_width, color=mapcolour, zorder=10)
+
+    if grid_vertical:
+        pos = max(xmin, grid_vertical)
+        while pos < xmax:
+            ymin, ymax = plt.ylim()
+            plt.plot([bar_pos[pos] - (1 - bar_width)/2, bar_pos[pos] - (1 - bar_width)/2], [ymin, ymax], c='black', linestyle='-', alpha=0.6, zorder=1)
+            pos += grid_vertical
+
+    ax.set_aspect('auto')
     plt.tight_layout()
+
+
+def gbar(x, y, mapcolour, width=1, bottom=0):
+    X = [[.6, .6], [.7, .7]]
+    c = mcolors.ColorConverter().to_rgb
+    cm = make_colormap([c('white'), c(mapcolour)])
+    for left, top in zip(x, y):
+        if top != bottom:
+            right = left + width
+            plt.imshow(X, interpolation='bicubic', cmap=cm, extent=(left, right, bottom, top), alpha=1, zorder=10)
+            plt.plot([left, left], [bottom, top], color='black', linestyle='-', zorder=20)
+            plt.plot([right, right], [bottom, top], color='black', linestyle='-', zorder=20)
+            plt.plot([right, left], [top, top], color='black', linestyle='-', zorder=20)
+
+
+# From http://stackoverflow.com/questions/16834861/create-own-colormap-using-matplotlib-and-plot-color-scale
+def make_colormap(seq):
+    """Return a LinearSegmentedColormap
+    seq: a sequence of floats and RGB-tuples. The floats should be increasing
+    and in the interval (0,1).
+    """
+    seq = [(None,) * 3, 0.0] + list(seq) + [1.0, (None,) * 3]
+    cdict = {'red': [], 'green': [], 'blue': []}
+    for i, item in enumerate(seq):
+        if isinstance(item, float):
+            r1, g1, b1 = seq[i - 1]
+            r2, g2, b2 = seq[i + 1]
+            cdict['red'].append([item, r1, r2])
+            cdict['green'].append([item, g1, g2])
+            cdict['blue'].append([item, b1, b2])
+    return mcolors.LinearSegmentedColormap('CustomMap', cdict)
 
 
 def determine_stats(dupheader, infile, unique):

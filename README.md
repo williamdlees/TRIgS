@@ -47,11 +47,17 @@ The following tools will work on tab- or comma- separated files such as those pr
 
 [**PlotGermline**](docs/PlotGermline.md) creates histograms showing germline usage. 
 
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/germline.png" width="500">
+
 [**Spectratype**](docs/Spectratype.md) creates histograms showing CDR3 length distribution.
+
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/spectra_1.png" width="500">
 
 [**AbIdentity**](docs/AbIdentity.md) calculates sequence identities compared to a target sequence and a germline.
 
 [**PlotIdentity**](docs/PlotIdentity.md) creates repertoire identity/divergence plots.
+
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/identity.png" width="500">
 
 [**ClusterExtract**](docs/ClusterExtract.md/#clusterextract) uses the sequence IDs in a [**ClusterSeqs**](docs/ClusterSeqs.md) output file to extract all records corresponding to a nominated cluster.
 

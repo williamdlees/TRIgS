@@ -7,20 +7,27 @@ SpectraType requires [NumPy](http://www.numpy.org) and [matplotlib](http://matpl
 
 ## Usage ##
 
-     Spectratype.py [-h] [-u] [-t TITLES] [-c COLS] [-d DUPHEADER] [-s SAVE]
-                    [-y YMAX] [-x XMAX]
-                    infiles
+    Spectratype.py [-h] [-b BARCOLOUR] [-c COLS] [-d DUPHEADER] [-g] [-gh]
+                   [-gv GRID_VERTICAL] [-s SAVE] [-t TITLES] [-u]
+                   [-w WIDTH] [-xmax XMAX] [-xmin XMIN] [-y YMAX]
+                   infiles
 
 Argument|Meaning
 ---------|-------
 `infiles`|Input file names, separated by commas (IMGT/IgBLASTPlus format.
-`[-t TITLES]`|Comma-separated list of titles to use for plots (must have the same number of items as there are files). Default is to use filenames.
+`[-b BARCOLOUR]`|Colours to use for plots (one or more colours, separated by commas). If there are more plots than colours, the colours will repeat in a cycle
 `[-c COLS]`|Number of plots to place on each row of the output (default 1)
 `[-d DUPHEADER]`|Prefix of the duplicate count in the Sequence ID, e.g. 'DUPCOUNT='
+`[-g]`|Fill bars with a gradiented colour (as in the example above)
+`[-gh]`|Show horizontal grid lines
+`[-gv GRID_VERTICAL]`|Show vertical grid lines after every GRID_VERTICAL number of bars
 `[-s SAVE]`|Save the plot to the specified file, otherwise display it interactively
-`[-y YMAX]`|Max y-value to use on all plots
-`[-x XMAX]`|Max x-value to use on all plots
+`[-t TITLES]`|Comma-separated list of titles to use for plots (must have the same number of items as there are files). Default is to use filenames.
 `[-u]`|Only count unique sequences
+`[-w WIDTH]`|Column width, between 0 and 1 (0.8 in the above example)
+`[-y YMAX]`|Max y-value (read count) to use on all plots
+`[-xmax XMAX]`|Max x-value (CDR3 length) to use on all plots
+`[-xmin XMAX]`|Max x-value (CDR3 length) to use on all plots
 `[-h]`|Provide a help message and exit
 
 ## Output Files ##
