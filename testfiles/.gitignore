@@ -9,3 +9,5 @@ test_Cluster265_germlines_germ_of.fasta
 test_Cluster265_germlines_germ_ocf.fasta
 test_Cluster265_germlines_germ_oicf.fasta
 test_Cluster265_germlines_cj.fasta
+identity.pdf
+kappa_CDR3_length.csv
