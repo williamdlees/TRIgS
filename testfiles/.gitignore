@@ -11,3 +11,9 @@ test_Cluster265_germlines_germ_oicf.fasta
 test_Cluster265_germlines_cj.fasta
 identity.pdf
 kappa_CDR3_length.csv
+dist_10k__length_distribution.pdf
+dist_10k__min_dist.pdf
+heavy_n_junction_35000_clstr.clstr
+kappa_CDR3_length.pdf
+kappa_germlines.pdf
+timeline.txt
