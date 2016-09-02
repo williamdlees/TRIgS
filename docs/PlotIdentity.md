@@ -33,7 +33,7 @@ The format of the option is:
 
 -p "file1,specifier1,file2,specifier2,...filen,specifiern"
 
-At least one file and specifier must be provided.
+At least one file and specifier must be provided if the option is used.
 
 The file(s) each contain one or more sequence IDs, together with their identity and divergence values, in the format produced by AbIdentity.py. The format specifier has three sections, of which the first is mandatory and the other two are optional. The three sections are divided by the character /.
 
