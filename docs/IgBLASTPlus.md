@@ -1,6 +1,6 @@
 # IgBLASTPlus #
 
-NCBI's <a href="http://www.ncbi.nlm.nih.gov/igblast/">IgBLAST</a> is a valuable tool for high-speed Ig sequence analysis which has the advantage that it can be run locally, but it provides verbose output that is not amenable to computational processing. Also, although it matches the junction against D and J segments providing best match analysis, it does not identify the 3' end of the junction and hence does not list the CDR3 or the junction sequence. IgBLASTPlus summarises IgBLAST output in an IMGT-style tab-separated format, identifies the conserved W or F that terminates the junction by comparison with the J germline, and hence is able to list the CDR3 and junction sequences.
+NCBI's <a href="http://www.ncbi.nlm.nih.gov/igblast/">IgBLAST</a> is a valuable tool for high-speed Ig sequence analysis which has the advantage that it can be run locally, but it provides verbose output that is not amenable to computational processing. IgBLASTPlus summarises IgBLAST output in an IMGT-style tab-separated format.
 
 ## Usage ##
 
