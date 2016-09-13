@@ -4,14 +4,15 @@ NCBI's <a href="http://www.ncbi.nlm.nih.gov/igblast/">IgBLAST</a> is a valuable 
 
 ## Usage ##
 
+<b>This version of IgBLASTPlus is compatible with IgBLAST v1.6 onwards. Please check your version of IgBLAST before proceeding and upgrade if necessary.</b>
+
 IgBLAST must be run with the option '-outfmt 3' to create the analysis file required by IgBLASTPlus.
 
-	python IgBLASTPlus.py [-h] [-v] seqfile jgermfile igblastfile tag
+	python IgBLASTPlus.py [-h] [-v] seqfile igblastfile tag
 
 Argument|Meaning
 ---------|-------
 `seqfile`|The sequences analysed by IgBLAST (FASTA format).
-`jgermfile`|The J-germline file provided to IgBLAST (FASTA format).
 `igblastfile`|The output file provided by IgBLAST (with option '-outfmt 3')
 `tag`|A string which will be prepended to the filename of each output file produced by the script. The output files have fixed file names, listed below.
 `[-v]`|Provide diagnostic output when parsing IgBLAST alignments.
@@ -45,7 +46,7 @@ Field|Content
 
 ### *tag*_j.txt ###
 
-Nucleotide analysis of the junction, based on IgBLAST's junction details and supplemented by the identification of the entire junction.
+Nucleotide analysis of the junction, based on IgBLAST's junction details.
 
 Fields included:
 

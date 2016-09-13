@@ -30,24 +30,17 @@ def main():
     parser = argparse.ArgumentParser(description='Summarise each IgBlast analysis on a single tab-separated line.',
                                      epilog='The program creates two output files: <tag>_n.fasta (nucleotide analysis) and <tag>_n.fasta (amino acid analysis)')
     parser.add_argument('seqfile', help='file containing the sequences analysed by IgBlast (FASTA)')
-    parser.add_argument('jgermfile', help='the J-germline file used by IgBlast when analysing the sequences')
     parser.add_argument('igblastfile', help='analysis file from IgBlast (produced with option -outfmt 3)')
     parser.add_argument('tag', help='prefix for output files')
     parser.add_argument('-v', '--verbose', help='verbose output', action='store_true')
     args = parser.parse_args()
     
     verbose = args.verbose
-    fieldorder = ['FR1', 'CDR1', 'FR2', 'CDR2', 'FR3']
+    fieldorder = ['FR1', 'CDR1', 'FR2', 'CDR2', 'FR3', 'CDR3']
 
     seqs = {}
     for seq_record in SeqIO.parse(args.seqfile, 'fasta'):
         seqs[seq_record.id] = str(seq_record.seq.upper())
-
-    j_germs = {}
-    for seq_record in SeqIO.parse(args.jgermfile, 'fasta'):
-        seq_record.seq = seq_record.seq.upper()
-        id = seq_record.id.split('|')[1] if len(seq_record.id.split('|')) > 1 else seq_record.id
-        j_germs[id] = str(seq_record.seq)
 
     with open(args.igblastfile, 'r') as fi, open(args.tag + '_n.txt', 'wb') as fo_n, open(args.tag + '_aa.txt', 'wb') as fo_aa, open(args.tag + '_j.txt', 'wb') as fo_j:
         fieldnames = ['Sequence ID', 'Functionality', 'V-GENE and allele', 'D-GENE and allele', 'J-GENE and allele', 'Chain Type', 'Stop Codon', 'V-J frame', 
@@ -244,9 +237,13 @@ def main():
                                     i = 0
                                     for ind in field_indeces:
                                         res[fieldorder[ind] + '-IMGT'] = field_values[i].replace('-', '')
-                                        if fieldorder[ind] == 'FR3':
-                                            raw_fr3 = field_values[i]       # store this so that we can locate it in the query, even if gapped
+                                        if fieldorder[ind] == 'CDR3':
+                                            (start, end) = extents[i]
+                                            if len(al_query_seq) > end+3:
+                                                res['JUNCTION-IMGT'] = al_query_seq[start-3:end+3].replace('-', '')
+                                            
                                         i += 1
+                                        
                             
                             if res['Sequence ID'] not in seqs:
                                 raise ValueError("Sequence %s not found in FASTA file" % res['Sequence ID']) 
@@ -263,92 +260,31 @@ def main():
                                 while (len(res['FR1-IMGT']) % 3) != 0:
                                     res['FR1-IMGT'] = res['FR1-IMGT'][1:]
                                     
-                            # Determine CDR3 and Junction
-                            # Need to make sure we work with the ungapped query sequence throughout, so that alignment positions
-                            # reported by IgBlast are correctly interpreted.
-                            if jmatch != '' and 'FR3-IMGT' in res:
-                                j_seq = j_germs[jmatch]
-                                al_query_seq_ungapped = al_query_seq.replace('-', '')
-                                CDR3_start = al_query_seq_ungapped.find(res['FR3-IMGT']) + len(res['FR3-IMGT']) + al_query_start
-                                trailer = al_query_seq_ungapped[CDR3_start - al_query_start:]
-            
-                                # Extend the sequence forward to cover as much as possible of the j-gene.
-                                if al_jmatch_start > 0 and al_jmatch_end < len(j_seq) and al_query_end < len(seq):
-                                    extent = min(len(j_seq) - al_jmatch_end, len(seq) - al_query_end)
-                                    trailer += seq[al_query_end:al_query_end + extent]
+                            if 'JUNCTION-IMGT' in res:
+                                inner_junc = junc['N-REGION'] + junc['D-REGION'] + junc['N2-REGION']
+                                if inner_junc in res['JUNCTION-IMGT']:
+                                    p = res['JUNCTION-IMGT'].find(inner_junc)
+                                    junc['3\'V-REGION'] = res['JUNCTION-IMGT'][:p] if p > 0 else ''
+                                    junc['5\'J-REGION'] = res['JUNCTION-IMGT'][p + len(inner_junc):] if p + len(inner_junc) < len(res['JUNCTION-IMGT']) else ''
                                     
-                                # Make sure the sequence doesn't extend beyond the j-gene.
-                                if len(trailer[al_query_j_start - CDR3_start:]) > len(j_seq[al_jmatch_start - 1:]):
-                                    trailer = trailer[:len(j_seq[al_jmatch_start - 1:]) - len(trailer[al_query_j_start - CDR3_start:])]
-                                    
-                                # Trim to a whole number of codons
-                                while len(trailer) % 3 != 0:
-                                    trailer = trailer[:-1]
-                                    
-                                # Scan the j-region for the conserved W or F, checking that it is present both in the sequence and
-                                # in the germline J-gene.
-            
-                                def chunks(l, n):
-                                    '''Yield successive n-sized chunks from l.'''
-                                    for i in xrange(0, len(l), n):
-                                        yield l[i:i + n]
-            
-                                if 'VH' in res['Chain Type']:
-                                    sig = 'TGG'
-                                else:
-                                    sig = 'TT[CT]'
-            
-                                # Start at the first codon boundary that is into the J-gene
-                                start_q_pos = al_query_j_start - CDR3_start
-                                start_j_pos = al_jmatch_start - 1
-                                while start_q_pos % 3 != 0:
-                                    start_q_pos += 1
-                                    start_j_pos += 1
-                                    
-                                j_q_trailer = trailer[start_q_pos:]
-                                j_s_trailer = j_seq[start_j_pos:]
-    
-                                found_CDR3_end = False
-                                CDR3_end = start_q_pos
-                                for q, s in zip(chunks(j_q_trailer, 3), chunks(j_s_trailer, 3)):
-                                    if re.match(sig, q) and re.match(sig, s):
-                                        found_CDR3_end = True
-                                        break
-                                    CDR3_end += 3
-            
-                                if found_CDR3_end:
-                                    res['CDR3-IMGT'] = trailer[:CDR3_end]
-                                    res['JUNCTION-IMGT'] = res['FR3-IMGT'][-3:] + trailer[:CDR3_end + 3]
-                                    res['FR4-IMGT'] = trailer[CDR3_end:]
-                                    
-                                    inner_junc = junc['N-REGION'] + junc['D-REGION'] + junc['N2-REGION']
-                                    if inner_junc in res['JUNCTION-IMGT']:
-                                        p = res['JUNCTION-IMGT'].find(inner_junc)
-                                        junc['3\'V-REGION'] = res['JUNCTION-IMGT'][:p] if p > 0 else ''
-                                        junc['5\'J-REGION'] = res['JUNCTION-IMGT'][p + len(inner_junc):] if p + len(inner_junc) < len(res['JUNCTION-IMGT']) else ''
-                                        
-                                        if junc['3\'V-REGION'] + inner_junc + junc['5\'J-REGION'] != res['JUNCTION-IMGT']:
-                                            if verbose:
-                                                print "%s: junction misalignment" % res['Sequence ID']  
-                                            res['Notes'] += 'Error: junction misalignment'
-                                    else:
-                                        # If IgBLAST does not find a V-gene alignment which extends as far as the first Cys of the junction, it creates an N-region which covers
-                                        # the first Cysteine and extends downstream beyond the junction. As the junction analysis is inaccurate, we mark such (rare) occurrences 
-                                        # as non-productive, even though IgBLAST was able to determine the junction in the alignment.
+                                    if junc['3\'V-REGION'] + inner_junc + junc['5\'J-REGION'] != res['JUNCTION-IMGT']:
                                         if verbose:
-                                            print "%s: junction analysis %s does not match inferred junction %s" % (res['Sequence ID'], inner_junc, res['JUNCTION-IMGT'])
-                                        res['Notes'] += ' Junction analysis does not match inferred junction. Possibly first Cysteine was not identified in V-gene alignment.'
-                                        res['Functionality'] = 'unproductive'
+                                            print "%s: junction misalignment" % res['Sequence ID']  
+                                        res['Notes'] += 'Error: junction misalignment'
                                 else:
-                                    res['Notes'] += 'Closing CDR3 F/W not found.'
+                                    # If IgBLAST does not find a V-gene alignment which extends as far as the first Cys of the junction, it creates an N-region which covers
+                                    # the first Cysteine and extends downstream beyond the junction. As the junction analysis is inaccurate, we mark such (rare) occurrences 
+                                    # as non-productive, even though IgBLAST was able to determine the junction in the alignment.
+                                    if verbose:
+                                        print "%s: junction analysis %s does not match inferred junction %s" % (res['Sequence ID'], inner_junc, res['JUNCTION-IMGT'])
+                                    res['Notes'] += ' Junction analysis does not match inferred junction. Possibly first Cysteine was not identified in V-gene alignment.'
                                     res['Functionality'] = 'unproductive'
-                        
                             else:
+                                res['Functionality'] = 'unproductive'                        
                                 if jmatch == '':
                                     res['Notes'] += 'J-gene not identified. '
                                 if 'FR3-IMGT' not in res:
                                     res['Notes'] += 'FR3 not identified. '
-                                res['Functionality'] = 'unproductive'
                         
                             if len(res) > 0:
                                 for k,v in res.iteritems():

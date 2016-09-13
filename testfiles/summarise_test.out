@@ -1,4 +1,4 @@
-Database: rabbit_IGV.fasta; rabbit_IGD.fasta; rabbit_IGJ.fasta
+Database: imgt_rabbit_IGV.fasta; imgt_rabbit_IGD.fasta; imgt_rabbit_IGJ.fasta
            193 sequences; 45,514 total letters
 
 
@@ -9,12 +9,12 @@ Length=336
                                                                                                       Score     E
 Sequences producing significant alignments:                                                          (Bits)  Value
 
-lcl|IGHV1S45*01                                                                                         364   2e-103
-lcl|IGHV1S40*01                                                                                         346   8e-98 
-lcl|IGHV1S47*01                                                                                         346   8e-98 
-lcl|IGHJ4*01                                                                                          75.8    6e-18 
-lcl|IGHJ2*01                                                                                          65.9    5e-15 
-lcl|IGHJ2*02                                                                                          65.9    5e-15 
+IGHV1S45*01                                                                                           364     2e-103
+IGHV1S40*01                                                                                           346     8e-98 
+IGHV1S47*01                                                                                           346     8e-98 
+IGHJ4*01                                                                                              75.8    6e-18 
+IGHJ2*01                                                                                              65.9    5e-15 
+IGHJ2*02                                                                                              65.9    5e-15 
 
 
 Domain classification requested: imgt
@@ -25,6 +25,9 @@ IGHV1S45*01	N/A	IGHJ4*01	VH	No	In-frame	Yes	+
 
 V-(D)-J junction details based on top germline gene matches (V end, V-D junction, D region, D-J junction, J start).  Note that possible overlapping nucleotides at VDJ junction (i.e, nucleotides that could be assigned to either rearranging gene) are indicated in parentheses (i.e., (TACT)) but are not included under the V, D, or J gene itself
 GCGAG	N/A	N/A	GAATTTTT	ACTTG	
+
+Sub-region sequence details (nucleotide sequence, translation)
+CDR3	GCGAGGAATTTTTACTTG	ARNFYL
 
 Alignment summary between query and top germline V gene hit (from, to, length, matches, mismatches, gaps, percent identity)
 FR1-IMGT	1	75	75	72	3	0	96
@@ -56,7 +59,7 @@ V  91.2% (271/297)  IGHV1S45*01  180  ...........G............................--
 V  90.6% (260/287)  IGHV1S40*01  177  ...........G............................---..AA...........................................  263
 V  88.4% (259/293)  IGHV1S47*01  174  A..........G.....T...T..................AGA.G.A..AGCCTA.A.................................  263
 
-                                      ------------------------>                                                   
+                                      ------------------------><----CDR3-IMGT--->                                 
                     Query_1      261  CGCGGACACGGCCACCTATTTCTGTGCGAGGAATTTTTACTTGTGGGGCCCAGGCACCCTGGTCACCGTCTCCTCA  336
 V  91.2% (271/297)  IGHV1S45*01  267  ..............................----------------------------------------------  296
 V  90.6% (260/287)  IGHV1S40*01  264  ..............................----------------------------------------------  293
@@ -82,15 +85,15 @@ Length=366
                                                                                                       Score     E
 Sequences producing significant alignments:                                                          (Bits)  Value
 
-lcl|IGHV1S45*01                                                                                         408   1e-116
-lcl|IGHV1S40*01                                                                                         399   9e-114
-lcl|IGHV1S42*01                                                                                         321   3e-90 
-lcl|IGHD1-1*01                                                                                        20.4    0.063 
-lcl|IGHD4-2*01                                                                                        18.4    0.25  
-lcl|IGHD8-1*01                                                                                        18.4    0.25  
-lcl|IGHJ4*01                                                                                          71.9    1e-16 
-lcl|IGHJ2*01                                                                                          65.9    6e-15 
-lcl|IGHJ2*02                                                                                          65.9    6e-15 
+IGHV1S45*01                                                                                           408     1e-116
+IGHV1S40*01                                                                                           399     9e-114
+IGHV1S42*01                                                                                           321     3e-90 
+IGHD1-1*01                                                                                            20.4    0.063 
+IGHD4-2*01                                                                                            18.4    0.25  
+IGHD8-1*01                                                                                            18.4    0.25  
+IGHJ4*01                                                                                              71.9    1e-16 
+IGHJ2*01                                                                                              65.9    6e-15 
+IGHJ2*02                                                                                              65.9    6e-15 
 
 
 Domain classification requested: imgt
@@ -101,6 +104,9 @@ IGHV1S45*01	IGHD1-1*01	IGHJ4*01	VH	No	In-frame	Yes	+
 
 V-(D)-J junction details based on top germline gene matches (V end, V-D junction, D region, D-J junction, J start).  Note that possible overlapping nucleotides at VDJ junction (i.e, nucleotides that could be assigned to either rearranging gene) are indicated in parentheses (i.e., (TACT)) but are not included under the V, D, or J gene itself
 AGAGA	TGCTGGTAC	TAGTGGTTAT	ATAGCCTATAAT	TTGTG	
+
+Sub-region sequence details (nucleotide sequence, translation)
+CDR3	GCGAGAGATGCTGGTACTAGTGGTTATATAGCCTATAATTTG	ARDAGTSGYIAYNL
 
 Alignment summary between query and top germline V gene hit (from, to, length, matches, mismatches, gaps, percent identity)
 FR1-IMGT	1	75	75	70	5	0	93.3
@@ -132,7 +138,7 @@ V  93.6% (280/299)  IGHV1S45*01  181  ..........GC........A.....................
 V  94.1% (272/289)  IGHV1S40*01  178  ..........GC........A..........................................................T..........  267
 V  86.5% (257/297)  IGHV1S42*01  175  .GG.......GC....T...A........................---............GA....A............T....A...A.  261
 
-                                      -------------------->                                                                     
+                                      --------------------><----------------CDR3-IMGT--------------->                           
                     Query_2      271  GACACGGCCACCTATTTCTGTGCGAGAGATGCTGGTACTAGTGGTTATATAGCCTATAATTTGTGGGGCCCAGGCACCCTGGTCACCGTC  360
 V  93.6% (280/299)  IGHV1S45*01  271  .............................-------------------------------------------------------------  299
 V  94.1% (272/289)  IGHV1S40*01  268  .............................-------------------------------------------------------------  296
@@ -167,12 +173,12 @@ Length=339
                                                                                                       Score     E
 Sequences producing significant alignments:                                                          (Bits)  Value
 
-lcl|IGKV1S15*01                                                                                         366   6e-104
-lcl|IGKV1S19*01                                                                                         355   1e-100
-lcl|IGKV1S22*01                                                                                         352   1e-99 
-lcl|IGKJ1-2*01                                                                                        67.9    1e-15 
-lcl|IGKJ1-2*02                                                                                        60.0    3e-13 
-lcl|IGKJ1-2*04                                                                                        46.1    5e-09 
+IGKV1S15*01                                                                                           366     6e-104
+IGKV1S19*01                                                                                           355     1e-100
+IGKV1S22*01                                                                                           352     1e-99 
+IGKJ1-2*01                                                                                            67.9    1e-15 
+IGKJ1-2*02                                                                                            60.0    3e-13 
+IGKJ1-2*04                                                                                            46.1    5e-09 
 
 
 Domain classification requested: imgt
@@ -183,6 +189,9 @@ IGKV1S15*01	IGKJ1-2*01	VK	No	In-frame	Yes	+
 
 V-(D)-J junction details based on top germline gene matches (V end, V-J junction, J start).  Note that possible overlapping nucleotides at VDJ junction (i.e, nucleotides that could be assigned to either rearranging gene) are indicated in parentheses (i.e., (TACT)) but are not included under the V, D, or J gene itself
 TACTG	TTGCTGAGGGTGC	TGCTT	
+
+Sub-region sequence details (nucleotide sequence, translation)
+CDR3	CTAGGCGCTTATGATTTTACTGTTGCTGAGGGTGCTGCT	LGAYDFTVAEGAA
 
 Alignment summary between query and top germline V gene hit (from, to, length, matches, mismatches, gaps, percent identity)
 FR1-IMGT	1	78	78	70	8	0	89.7
@@ -214,7 +223,7 @@ V  90.1% (263/292)  IGKV1S15*01  181  ..........................................
 V  90.7% (253/279)  IGKV1S19*01  181  ...GATA......GC........................................G.G..C.............................  270
 V  90.9% (250/275)  IGKV1S22*01  181  .......................................................G.G..C.............................  270
 
-                                                                                                           
+                                      <--------------CDR3-IMGT-------------->                              
                     Query_3      271  CTAGGCGCTTATGATTTTACTGTTGCTGAGGGTGCTGCTTTCGGCGGAGGGACCGAGGTGGTGGTCAAA  339
 V  90.1% (263/292)  IGKV1S15*01  271  .A....AG....C..AG..G..-----------------------------------------------  292
 V  90.7% (253/279)  IGKV1S19*01  271  .......G.......------------------------------------------------------  285
@@ -240,12 +249,12 @@ Length=334
                                                                                                       Score     E
 Sequences producing significant alignments:                                                          (Bits)  Value
 
-lcl|IGKV1S47*01                                                                                         333   4e-94
-lcl|IGKV1S36*01                                                                                         332   1e-93
-lcl|IGKV1S10*01                                                                                         329   1e-92
-lcl|IGKJ1-2*01                                                                                        69.9    3e-16
-lcl|IGKJ1-2*02                                                                                        61.9    8e-14
-lcl|IGKJ1-2*04                                                                                        44.1    2e-08
+IGKV1S47*01                                                                                           333     4e-94
+IGKV1S36*01                                                                                           332     1e-93
+IGKV1S10*01                                                                                           329     1e-92
+IGKJ1-2*01                                                                                            69.9    3e-16
+IGKJ1-2*02                                                                                            61.9    8e-14
+IGKJ1-2*04                                                                                            44.1    2e-08
 
 
 Domain classification requested: imgt
@@ -256,6 +265,9 @@ IGKV1S47*01	IGKJ1-2*01	VK	No	In-frame	Yes	+
 
 V-(D)-J junction details based on top germline gene matches (V end, V-J junction, J start).  Note that possible overlapping nucleotides at VDJ junction (i.e, nucleotides that could be assigned to either rearranging gene) are indicated in parentheses (i.e., (TACT)) but are not included under the V, D, or J gene itself
 ACTGT	CAGAGTGCTCTTTATACTAGCGCTACTGATATTTG	TGCTT	
+
+Sub-region sequence details (nucleotide sequence, translation)
+CDR3	CAGAGTGCTCTTTATACTAGCGCTACTGATATTTGTGCT	QSALYTSATDICA
 
 Alignment summary between query and top germline V gene hit (from, to, length, matches, mismatches, gaps, percent identity)
 FR1-IMGT	10	78	69	69	0	0	100
@@ -280,13 +292,13 @@ V  91.8% (234/255)  IGKV1S47*01  95   T...A............................C......GC
 V  90.8% (236/260)  IGKV1S36*01  95   .C..AT...........................C......GC............C..C.........G.C....................  184
 V  87.5% (245/280)  IGKV1S10*01  95   .C..AT...........................C......GC..........CA.G.C.....C...G......................  184
 
-                                      ----------------------FR3-IMGT------------------------------------------------->          
+                                      ----------------------FR3-IMGT-------------------------------------------------><---------
                     Query_4      185  TCGAAGGCAGTGGATCTGGCACAGAGTACACTCTCACCATCAGCGACCTGGAGTGTGACGATGCTGCCACTTACTACTGTCAGAGTGCTC  274
 V  91.8% (234/255)  IGKV1S47*01  185  ..A................G...C...T..............A..G.G..C.............................----------  264
 V  90.8% (236/260)  IGKV1S36*01  185  ..A........A.......G.......T.............................C........................--------  266
 V  87.5% (245/280)  IGKV1S10*01  185  ..A................G...C...T.............................C........................A..CAA.T  274
 
-                                                                                                  
+                                      -----CDR3-IMGT-------------->                               
                     Query_4      275  TTTATACTAGCGCTACTGATATTTGTGCTTTCGGCGGAGGGACCGAGGTGGTGGTCAAAG  334
 V  87.5% (245/280)  IGKV1S10*01  275  A.....G...--------------------------------------------------  284
 J  100.0% (35/35)   IGKJ1-2*01   6    -------------------------...................................  40
@@ -310,12 +322,12 @@ Length=214
                                                                                                       Score     E
 Sequences producing significant alignments:                                                          (Bits)  Value
 
-lcl|IGHV1S40*01                                                                                         187   3e-50
-lcl|IGHV1S45*01                                                                                         187   3e-50
-lcl|IGHV1S47*01                                                                                         184   3e-49
-lcl|IGHJ4*01                                                                                          60.0    2e-13
-lcl|IGHJ2*01                                                                                          50.1    2e-10
-lcl|IGHJ2*02                                                                                          50.1    2e-10
+IGHV1S40*01                                                                                           187     3e-50
+IGHV1S45*01                                                                                           187     3e-50
+IGHV1S47*01                                                                                           184     3e-49
+IGHJ4*01                                                                                              60.0    2e-13
+IGHJ2*01                                                                                              50.1    2e-10
+IGHJ2*02                                                                                              50.1    2e-10
 
 
 Domain classification requested: imgt
@@ -326,6 +338,9 @@ IGHV1S40*01,IGHV1S45*01	N/A	IGHJ4*01	VH	No	In-frame	Yes	+
 
 V-(D)-J junction details based on top germline gene matches (V end, V-D junction, D region, D-J junction, J start).  Note that possible overlapping nucleotides at VDJ junction (i.e, nucleotides that could be assigned to either rearranging gene) are indicated in parentheses (i.e., (TACT)) but are not included under the V, D, or J gene itself
 CGAGA	N/A	N/A	AATTTTT	ACTTG	
+
+Sub-region sequence details (nucleotide sequence, translation)
+CDR3	ACGAGAAATTTTTACTTG	TRNFYL
 
 Alignment summary between query and top germline V gene hit (from, to, length, matches, mismatches, gaps, percent identity)
 FR2-IMGT	1	23	23	19	4	0	82.6
@@ -343,14 +358,14 @@ V  86.8% (145/167)  IGHV1S40*01  128  ..G...TG...........A.........GC....AG.AGT.
 V  86.8% (145/167)  IGHV1S45*01  131  ..G...TG...........A.........GC....AG.AGT..T.....T........G.G..............G.............-  219
 V  86.2% (144/167)  IGHV1S47*01  128  ..G................A..........A.......---.................G.G.....T...T....G.............A  214
 
-                                      -------------FR3-IMGT---------------------------------------------------->                
+                                      -------------FR3-IMGT----------------------------------------------------><----CDR3-IMGT--
                     Query_5      87   --AGCACCTCGTCGACCACGATGACTCTGCAAATGACCAGTGTGACAGGCGCGGACACGGCCACCTATTTCTGTACGAGAAATTTTTACT  174
 V  86.8% (145/167)  IGHV1S40*01  217  --.AA...............G....................C......C.........................G.....----------  294
 V  86.8% (145/167)  IGHV1S45*01  220  --.AA...............G....................C......C.........................G.....----------  297
 V  86.2% (144/167)  IGHV1S47*01  215  GA......AGCCTA.A....G....................C......C..T......................G.....----------  294
 J  97.1% (33/34)    IGHJ4*01     10   ---------------------------------------------------------------------------------------...  12
 
-                                                                     
+                                      ->                             
                     Query_5      175  TGTGGGGCCAAGGCACCCTGGTCACCGTCTC  205
 J  97.1% (33/34)    IGHJ4*01     13   .........C.....................  43
 J  96.6% (28/29)    IGHJ2*01     17   --.......C.....................  45
@@ -366,19 +381,38 @@ Lambda      K        H
 
 Effective search space used: 7634770
 
+Total queries = 5, queries with identifiable CDR3 = 5
 
-  Database: rabbit_IGV.fasta
-    Posted date:  Sep 20, 2015  12:45 PM
+
+#Clonotype summary.  A particular clonotype includes any V(D)J rearrangements that have the same germline V(D)J gene segments, the same productive/non-productive status and the same CDR3 nucleotide as well as amino sequence (Those having the same CDR3 nucleotide but different amino acid sequence or productive/non-productive status due to frameshift in V or J gene are assigned to a different clonotype.  However, their clonotype identifers share the same prefix, for example, 6a, 6b).  Fields (tab-delimited) are clonotype identifier, representative query sequence name, count, frequency (%), CDR3 nucleotide sequence, CDR3 amino acid sequence, productive status, chain type, V gene, D gene, J gene
+
+1	1465495-1	1	20	ACGAGAAATTTTTACTTG	TRNFYL	Yes	VH	IGHV1S40*01,IGHV1S45*01	N/A	IGHJ4*01	
+2	10-37_kappa	1	20	CAGAGTGCTCTTTATACTAGCGCTACTGATATTTGTGCT	QSALYTSATDICA	Yes	VK	IGKV1S47*01	N/A	IGKJ1-2*01	
+3	10A3_kappa	1	20	CTAGGCGCTTATGATTTTACTGTTGCTGAGGGTGCTGCT	LGAYDFTVAEGAA	Yes	VK	IGKV1S15*01	N/A	IGKJ1-2*01	
+4	10-37_heavy	1	20	GCGAGAGATGCTGGTACTAGTGGTTATATAGCCTATAATTTG	ARDAGTSGYIAYNL	Yes	VH	IGHV1S45*01	IGHD1-1*01	IGHJ4*01	
+5	10A3_heavy	1	20	GCGAGGAATTTTTACTTG	ARNFYL	Yes	VH	IGHV1S45*01	N/A	IGHJ4*01	
+
+#All query sequences grouped by clonotypes.  Fields (tab-delimited) are clonotype identifier, count, frequency (%), min similarity to top germline V gene (%), max similarity to top germline V gene (%), average similarity to top germline V gene (%), query sequence name (multiple names are separated by a comma if applicable)
+
+1	1	20	86.8	86.8	86.8	1465495-1	
+2	1	20	91.8	91.8	91.8	10-37_kappa	
+3	1	20	90.1	90.1	90.1	10A3_kappa	
+4	1	20	93.6	93.6	93.6	10-37_heavy	
+5	1	20	91.2	91.2	91.2	10A3_heavy	
+
+
+  Database: imgt_rabbit_IGV.fasta
+    Posted date:  Sep 10, 2016  11:21 AM
   Number of letters in database: 43,735
   Number of sequences in database:  148
 
-  Database: rabbit_IGD.fasta
-    Posted date:  Sep 20, 2015  12:45 PM
+  Database: imgt_rabbit_IGD.fasta
+    Posted date:  Sep 10, 2016  11:21 AM
   Number of letters in database: 332
   Number of sequences in database:  11
 
-  Database: rabbit_IGJ.fasta
-    Posted date:  Sep 20, 2015  12:45 PM
+  Database: imgt_rabbit_IGJ.fasta
+    Posted date:  Sep 10, 2016  11:21 AM
   Number of letters in database: 1,447
   Number of sequences in database:  34
 

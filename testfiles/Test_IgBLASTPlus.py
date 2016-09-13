@@ -35,7 +35,7 @@ try:
 except:
     pass
 
-subprocess.call("python ../IgBLASTPlus.py %s %s %s summarise_test" % (TEST_SEQUENCES, JGERM_FILE, TEST_IGBLAST_OUTPUT), shell=True, cwd=os.getcwd())
+subprocess.call("python ../IgBLASTPlus.py %s %s summarise_test" % (TEST_SEQUENCES, TEST_IGBLAST_OUTPUT), shell=True, cwd=os.getcwd())
 
 with open(MODEL_OUTPUT_FILE, 'r') as model, open(TEST_OUTPUT_FILE, 'r') as test:
     mreader = csv.DictReader(model, delimiter='\t')
