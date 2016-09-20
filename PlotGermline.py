@@ -117,6 +117,7 @@ def main(argv):
                     for (height, legend) in zip(heights, legends):
                         stat_lookup[legend] = height
                     all_heights = []
+                    all_germlines_required.sort()
                     for germline in all_germlines_required:
                         all_heights.append(stat_lookup[germline] if germline in stat_lookup else 0)
                     writer.writerow([title] + all_heights)
