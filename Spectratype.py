@@ -147,7 +147,7 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
         variance = np.var(values)
         sigma = np.sqrt(variance)
         x = np.linspace(min(values), max(values), 100)
-        plt.plot(x, mlab.normpdf(x, mean, sigma)*len(values))
+        plt.plot(x, mlab.normpdf(x, mean, sigma)*len(values), zorder=20)
 
     ax.set_aspect('auto')
     plt.tight_layout()
