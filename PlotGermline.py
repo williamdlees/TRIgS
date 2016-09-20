@@ -36,6 +36,7 @@ def main(argv):
     parser.add_argument('-a', '--alpha_sort', help='sort columns alphabetically (default is by decreasing size)', action='store_true')    
     parser.add_argument('-b', '--barcolour', help='colour or list of colours for bars')
     parser.add_argument('-c', '--cols', help='Number of columns for plot')
+    parser.add_argument('-co', '--cons', help='Consolidate stats into a single table (csv output only)', action='store_true')
     parser.add_argument('-d', '--dupheader', help='Prefix for duplicate count, eg "DUPCOUNT=" for Presto')
     parser.add_argument('-f', '--frequency', help='Express chart in terms of frequency rather than number of reads', action='store_true')    
     parser.add_argument('-g', '--gradientfill', help='fill bars with a gradiented colour', action='store_true')    
@@ -54,6 +55,7 @@ def main(argv):
         exit()
     detail = args.detail
     field = args.field
+    consolidate = args.cons
     limit = int(args.limit) if args.limit else None
     ncols = int(args.cols) if args.cols else 1
     frequency = args.frequency
@@ -91,12 +93,33 @@ def main(argv):
     else:
         with open(outfile, 'wb') as fo:
             writer = csv.writer(fo)
-            for (stat, title) in zip(stats, titles):
-                (heights, legends) = stat
-                writer.writerow([''])
-                writer.writerow([title])
-                writer.writerow(['Germline'] + legends)
-                writer.writerow(['Occurrences'] + heights)
+            if not consolidate:
+                for (stat, title) in zip(stats, itertools.cycle(titles)):
+                    (heights, legends) = stat
+                    writer.writerow([''])
+                    writer.writerow([title])
+                    writer.writerow(['Germline'] + legends)
+                    writer.writerow(['Occurrences'] + heights)
+            else:
+                fullstats = []
+                for infile in infiles:
+                    fullstats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, None))
+                all_germlines_required = []
+                for stat in stats:
+                    (_, legends) = stat
+                    for legend in legends:
+                        if legend not in all_germlines_required:
+                            all_germlines_required.append(legend)
+                writer.writerow(['Germline'] + all_germlines_required)
+                for (fullstat, title) in zip(fullstats, itertools.cycle(titles)):
+                    stat_lookup = {}
+                    (heights, legends) = fullstat
+                    for (height, legend) in zip(heights, legends):
+                        stat_lookup[legend] = height
+                    all_heights = []
+                    for germline in all_germlines_required:
+                        all_heights.append(stat_lookup[germline] if germline in stat_lookup else 0)
+                    writer.writerow([title] + all_heights)
 
 
 def plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical):
