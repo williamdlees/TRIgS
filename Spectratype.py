@@ -27,6 +27,7 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.mlab as mlab
 import itertools
 
 def main(argv):
@@ -38,6 +39,7 @@ def main(argv):
     parser.add_argument('-g', '--gradientfill', help='fill bars with a gradiented colour', action='store_true')    
     parser.add_argument('-gh', '--grid_horizontal', help='horizontal grid lines', action='store_true')
     parser.add_argument('-gv', '--grid_vertical', help='vertical grid lines every n bars')
+    parser.add_argument('-ga', '--gauss', help='plot best-fit Gaussian distribution', action='store_true')    
     parser.add_argument('-s', '--save', help='Save output to file (as opposed to interactive display)')
     parser.add_argument('-t', '--titles', help='titles for each plot, separated by commas')
     parser.add_argument('-u', '--unique', help='only count unique sequences', action='store_true')
@@ -58,6 +60,7 @@ def main(argv):
     mapcolour = args.barcolour if args.barcolour else 'blue'
     mapcolour = mapcolour.split(',')
     grid_vertical = int(args.grid_vertical) if args.grid_vertical else False
+    gauss = args.gauss
 
     nrows = len(infiles) / ncols
     if len(infiles) % ncols != 0:
@@ -71,7 +74,7 @@ def main(argv):
         plt.figure(figsize=(8*ncols,4*nrows))
         plot_number = 1
         for (length, title, colour) in zip(lengths, itertools.cycle(titles), itertools.cycle(mapcolour)):
-            plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
+            plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical, gauss)
             plot_number += 1
         plt.tight_layout()
         if outfile:
@@ -93,7 +96,7 @@ def main(argv):
                 writer.writerow([next(ititle)] + list(length[minlength:maxlength]))
 
 
-def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical):
+def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical, gauss):
     if not xmax:
         for xmax in range(len(lengths)-1, 0, -1):
             if lengths[xmax] > 0:
@@ -132,6 +135,19 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
             ymin, ymax = plt.ylim()
             plt.plot([bar_pos[pos] - (1 - bar_width)/2, bar_pos[pos] - (1 - bar_width)/2], [ymin, ymax], c='black', linestyle='-', alpha=0.6, zorder=1)
             pos += grid_vertical
+            
+    if gauss:
+        values = []
+        for i in range(len(lengths)-1):
+            if lengths[i] > 0:
+                foo = [i]*lengths[i]
+                values += ([i] * lengths[i])
+        values = np.array(values)
+        mean = np.mean(values)
+        variance = np.var(values)
+        sigma = np.sqrt(variance)
+        x = np.linspace(min(values), max(values), 100)
+        plt.plot(x, mlab.normpdf(x, mean, sigma)*len(values))
 
     ax.set_aspect('auto')
     plt.tight_layout()
