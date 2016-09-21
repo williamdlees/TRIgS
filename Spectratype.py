@@ -62,11 +62,11 @@ def main(argv):
     mapcolour = mapcolour.split(',')
     grid_vertical = int(args.grid_vertical) if args.grid_vertical else False
     gauss = args.gauss
-    (sizex, sizey) = args.size.split(',') if args.size else (8,4)
 
     nrows = len(infiles) / ncols
     if len(infiles) % ncols != 0:
         nrows += 1
+    (sizex, sizey) = args.size.split(',') if args.size else (8*ncols,4*nrows)
 
     lengths = []
     for infile in infiles:
