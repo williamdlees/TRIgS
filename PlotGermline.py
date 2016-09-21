@@ -44,6 +44,7 @@ def main(argv):
     parser.add_argument('-gv', '--grid_vertical', help='vertical grid lines every n bars')
     parser.add_argument('-l', '--limit', help='limit to at most this many most frequent categories')
     parser.add_argument('-s', '--save', help='Save output to file (as opposed to interactive display)')
+    parser.add_argument('-sz', '--size', help='Figure size (x,y)')
     parser.add_argument('-t', '--titles', help='titles for each plot, separated by commas')
     parser.add_argument('-w', '--width', help='relative bar width (number between 0 and 1)')
     parser.add_argument('-y', '--ymax', help='Max y-value to use on all charts')
@@ -70,7 +71,8 @@ def main(argv):
     nrows = len(infiles) / ncols
     if len(infiles) % ncols != 0:
         nrows += 1
-        
+    (sizex, sizey) = args.size.split(',') if args.size else (8*ncols,4*nrows)
+
     alpha_sort = args.alpha_sort
     dupheader = args.dupheader
 
@@ -78,18 +80,44 @@ def main(argv):
     for infile in infiles:
         stats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, limit))
 
+    if consolidate:
+        fullstats = []
+        for infile in infiles:
+            fullstats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, None))
+        all_germlines_required = []
+        for stat in stats:
+            (_, legends) = stat
+            for legend in legends:
+                if legend not in all_germlines_required:
+                    all_germlines_required.append(legend)
+        all_germlines_required.sort()
+        fullheightlist = []
+        for (fullstat, title) in zip(fullstats, itertools.cycle(titles)):
+            stat_lookup = {}
+            (heights, legends) = fullstat
+            for (height, legend) in zip(heights, legends):
+                stat_lookup[legend] = height
+            all_heights = []
+            for germline in all_germlines_required:
+                all_heights.append(stat_lookup[germline] if germline in stat_lookup else 0)
+            fullheightlist.append(all_heights)
+
     if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
-        plt.figure(figsize=(8*ncols,4*nrows))
-        plot_number = 1
-        for (stat, title, colour) in zip(stats, itertools.cycle(titles), itertools.cycle(mapcolour)):
-            (heights, legends) = stat
-            plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
-            plot_number += 1
+        plt.figure(figsize=(float(sizex),float(sizey)))
+        if not consolidate:
+            plot_number = 1
+            for (stat, title, colour) in zip(stats, itertools.cycle(titles), itertools.cycle(mapcolour)):
+                (heights, legends) = stat
+                plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
+                plot_number += 1
+        else:
+            plot_multi(fullheightlist, all_germlines_required, frequency, ymax, titles, mapcolour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
         plt.tight_layout()
         if outfile:
             plt.savefig(outfile)
         else:
             plt.show()
+            
     else:
         with open(outfile, 'wb') as fo:
             writer = csv.writer(fo)
@@ -101,25 +129,8 @@ def main(argv):
                     writer.writerow(['Germline'] + legends)
                     writer.writerow(['Occurrences'] + heights)
             else:
-                fullstats = []
-                for infile in infiles:
-                    fullstats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, None))
-                all_germlines_required = []
-                for stat in stats:
-                    (_, legends) = stat
-                    for legend in legends:
-                        if legend not in all_germlines_required:
-                            all_germlines_required.append(legend)
-                all_germlines_required.sort()
-                writer.writerow(['Germline'] + all_germlines_required)
-                for (fullstat, title) in zip(fullstats, itertools.cycle(titles)):
-                    stat_lookup = {}
-                    (heights, legends) = fullstat
-                    for (height, legend) in zip(heights, legends):
-                        stat_lookup[legend] = height
-                    all_heights = []
-                    for germline in all_germlines_required:
-                        all_heights.append(stat_lookup[germline] if germline in stat_lookup else 0)
+                writer.writerow(['Germline'] + all_germlines_required)                    
+                for (heights, title) in zip(fullheightlist, itertools.cycle(titles)):
                     writer.writerow([title] + all_heights)
 
 
@@ -157,10 +168,77 @@ def plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, titl
     else:
         plt.bar(bar_pos, heights, width=bar_width, color=mapcolour, zorder=10)
         
+    # Remove every other y label because we get far too many by default
+    
+    locs, labels = plt.yticks()
+    newlocs = []
+    newlabels = []
+    
+    for i in range(0, len(labels)):
+        if i % 2 != 0:
+            newlocs.append(locs[i])
+            newlabels.append(str(int(locs[i])))
+            
+    plt.yticks(newlocs, newlabels)
+
     ax.set_aspect('auto')
     plt.tight_layout()
 
+
+def plot_multi(heightlist, legends, frequency, ymax, titles, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical):
+    x_pos = np.arange(len(legends))
+    ax = plt.subplot(1, 1, 1)
+    plt.xticks(x_pos+0.5, legends, rotation=-70, ha='center')
+    ax.tick_params(direction='out', top=False, right=False)
+    if ymax:
+        plt.ylim(0, ymax)
+    if frequency:
+        plt.ylabel('Frequency')
+    else:
+        plt.ylabel('Reads')
+
+    plt.xlim(0, len(legends))
     
+    bar_pos = x_pos
+    
+    if bar_width < 1.:
+        bar_pos = bar_pos + (1-bar_width)/2.
+    
+    if grid_horizontal:
+        plt.grid(which='major', axis='y', c='black', linestyle='-', alpha=0.6, zorder=1)
+        
+    if grid_vertical:
+        pos = grid_vertical
+        while pos < len(x_pos):
+            plt.plot([x_pos[pos], x_pos[pos]], [0, ymax], c='black', linestyle='-', alpha=0.6, zorder=1)
+            pos += grid_vertical
+
+    bar_width = bar_width/len(heightlist)
+    i = 0
+    for heights,colour in zip(heightlist, itertools.cycle(mapcolour)):
+        if gradientfill:
+            gbar(bar_pos + i*bar_width, heightlist[i], colour, width=bar_width)
+        else:
+            plt.bar(bar_pos + i*bar_width, heightlist[i], width=bar_width, color=colour, zorder=10)
+        i += 1
+        
+    # Remove every other y label because we get far too many by default
+    
+    locs, labels = plt.yticks()
+    newlocs = []
+    newlabels = []
+    
+    for i in range(0, len(labels)):
+        if i % 2 != 0:
+            newlocs.append(locs[i])
+            newlabels.append(str(int(locs[i])))
+            
+    plt.yticks(newlocs, newlabels)
+
+    ax.set_aspect('auto')
+    plt.tight_layout()
+
+
 def gbar(x, y, mapcolour, width=1, bottom=0):
     X = [[.6, .6], [.7, .7]]
     c = mcolors.ColorConverter().to_rgb
