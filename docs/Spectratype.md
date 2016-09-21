@@ -22,15 +22,17 @@ Argument|Meaning
 `[-c COLS]`|Number of plots to place on each row of the output (default 1)
 `[-d DUPHEADER]`|Prefix of the duplicate count in the Sequence ID, e.g. 'DUPCOUNT='
 `[-g]`|Fill bars with a gradiented colour (as in the example above)
+`[-ga]`|Fit a Gaussian trendline (having the same mean, variance and area under the curve) to the plot
 `[-gh]`|Show horizontal grid lines
-`[-gv GRID_VERTICAL]`|Show vertical grid lines after every GRID_VERTICAL number of bars
+`[-gv GRID_VERTICAL]`|Show vertical grid lines after every GRID_VERTICAL number of bars. If this is set, the x-axis is only labelled once in each vertical division.
 `[-s SAVE]`|Save the plot to the specified file, otherwise display it interactively
-`[-t TITLES]`|Comma-separated list of titles to use for plots (must have the same number of items as there are files). Default is to use filenames.
+`[-sz X,Y]`|Set the total figure size to X by Y inches (note that the smaller the overall figure is, the larger the text is with respect to the plot, which gives some control over font size)
+`[-t TITLES]`|Comma-separated list of titles to use for plots (must have the same number of items as there are files). Default is no title.
 `[-u]`|Only count unique sequences
-`[-w WIDTH]`|Column width, between 0 and 1 (0.8 in the above example)
+`[-w WIDTH]`|Bar column width, between 0 and 1 (0.8 in the above example)
 `[-y YMAX]`|Max y-value (read count) to use on all plots
-`[-xmax XMAX]`|Max x-value (CDR3 length) to use on all plots
-`[-xmin XMAX]`|Max x-value (CDR3 length) to use on all plots
+`[-xmax XMAX]`|Max x-value (CDR3 length) to use on all plots. If XMAX is set, the X-axis legend is only displayed below the lowest chart(s), as it is the same for all charts.
+`[-xmin XMIN]`|Max x-value (CDR3 length) to use on all plots
 `[-h]`|Provide a help message and exit
 
 ## Output Files ##
