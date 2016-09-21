@@ -112,24 +112,27 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
 
     bar_pos = np.arange(xmax + 1)
     
+    # if xmax is set, all the x axes will be the same, so only put labels on the bottom row
     # if we have a vertical grid, label just one point in each column
     
-    if grid_vertical:
-        labels = []
-        if grid_vertical % 2 == 0:
-            midpoint = grid_vertical/2
-        else:
-            midpoint = int(grid_vertical/2)
-        for tick in bar_pos:
-            if tick % grid_vertical == midpoint:
-                labels.append(str(tick))
+    if xmax is None or plot_number > (nrows-1)*ncols:
+        if grid_vertical:
+            labels = []
+            if grid_vertical % 2 == 0:
+                midpoint = grid_vertical/2
             else:
-                labels.append(' ')
+                midpoint = int(grid_vertical/2)
+            for tick in bar_pos:
+                if tick % grid_vertical == midpoint:
+                    labels.append(str(tick))
+                else:
+                    labels.append(' ')
+        else:
+            labels = ['%d' % x for x in bar_pos]
     else:
-        labels = ['%d' % x for x in bar_pos]
+        labels = []
             
     plt.xticks(bar_pos+0.5, labels)
-    plt.ylabel('Reads')
 
     if ymax:
         plt.ylim(0, ymax)
