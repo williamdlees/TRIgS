@@ -177,7 +177,10 @@ def plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, titl
     for i in range(0, len(labels)):
         if i % 2 != 0:
             newlocs.append(locs[i])
-            newlabels.append(str(int(locs[i])))
+            if frequency:
+                newlabels.append(str(float(locs[i])))
+            else:
+                newlabels.append(str(int(locs[i])))
             
     plt.yticks(newlocs, newlabels)
 
@@ -231,7 +234,10 @@ def plot_multi(heightlist, legends, frequency, ymax, titles, mapcolour, bar_widt
     for i in range(0, len(labels)):
         if i % 2 != 0:
             newlocs.append(locs[i])
-            newlabels.append(str(int(locs[i])))
+            if frequency:
+                newlabels.append(str(float(locs[i])))
+            else:
+                newlabels.append(str(int(locs[i])))
             
     plt.yticks(newlocs, newlabels)
 
