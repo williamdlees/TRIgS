@@ -41,6 +41,7 @@ def main(argv):
     parser.add_argument('-gv', '--grid_vertical', help='vertical grid lines every n bars')
     parser.add_argument('-ga', '--gauss', help='plot best-fit Gaussian distribution', action='store_true')    
     parser.add_argument('-s', '--save', help='Save output to file (as opposed to interactive display)')
+    parser.add_argument('-sz', '--size', help='Figure size (x,y)')
     parser.add_argument('-t', '--titles', help='titles for each plot, separated by commas')
     parser.add_argument('-u', '--unique', help='only count unique sequences', action='store_true')
     parser.add_argument('-w', '--width', help='relative bar width (number between 0 and 1)')
@@ -49,9 +50,9 @@ def main(argv):
     parser.add_argument('-y', '--ymax', help='Max y-value to use on all charts')
     args = parser.parse_args()
     infiles = args.infiles.split(',')
-    titles = args.titles.split(',') if args.titles else None
+    titles = args.titles.split(',') if args.titles else [""]
     ncols = int(args.cols) if args.cols else 1
-    xmin = int(args.xmin) if args.xmin else 0
+    xmin = int(args.xmin) if args.xmin else 1
     xmax = int(args.xmax) if args.xmax else None
     ymax = float(args.ymax) if args.ymax else None
     outfile = args.save if args.save else None
@@ -61,6 +62,7 @@ def main(argv):
     mapcolour = mapcolour.split(',')
     grid_vertical = int(args.grid_vertical) if args.grid_vertical else False
     gauss = args.gauss
+    (sizex, sizey) = args.size.split(',') if args.size else (8,4)
 
     nrows = len(infiles) / ncols
     if len(infiles) % ncols != 0:
@@ -71,7 +73,7 @@ def main(argv):
         lengths.append(determine_stats(dupheader, infile, args.unique))
         
     if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
-        plt.figure(figsize=(8*ncols,4*nrows))
+        plt.figure(figsize=(float(sizex),float(sizey)))
         plot_number = 1
         for (length, title, colour) in zip(lengths, itertools.cycle(titles), itertools.cycle(mapcolour)):
             plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical, gauss)
@@ -105,11 +107,27 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
     ax = plt.subplot(nrows, ncols, plot_number)
     ax.tick_params(direction='out', top=False, right=False)
 
-    if title:
+    if title != "":
         plt.xlabel(title)
 
     bar_pos = np.arange(xmax + 1)
-    labels = ['%d' % x for x in bar_pos]
+    
+    # if we have a vertical grid, label just one point in each column
+    
+    if grid_vertical:
+        labels = []
+        if grid_vertical % 2 == 0:
+            midpoint = grid_vertical/2
+        else:
+            midpoint = int(grid_vertical/2)
+        for tick in bar_pos:
+            if tick % grid_vertical == midpoint:
+                labels.append(str(tick))
+            else:
+                labels.append(' ')
+    else:
+        labels = ['%d' % x for x in bar_pos]
+            
     plt.xticks(bar_pos+0.5, labels)
     plt.ylabel('Reads')
 
@@ -130,11 +148,24 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
         plt.bar(bar_pos, lengths, width=bar_width, color=mapcolour, zorder=10)
 
     if grid_vertical:
-        pos = max(xmin, grid_vertical)
+        pos = 0
         while pos < xmax:
             ymin, ymax = plt.ylim()
             plt.plot([bar_pos[pos] - (1 - bar_width)/2, bar_pos[pos] - (1 - bar_width)/2], [ymin, ymax], c='black', linestyle='-', alpha=0.6, zorder=1)
             pos += grid_vertical
+            
+    # Remove every other y label because we get far too many by default
+    
+    locs, labels = plt.yticks()
+    newlocs = []
+    newlabels = []
+    
+    for i in range(0, len(labels)):
+        if i % 2 != 0:
+            newlocs.append(locs[i])
+            newlabels.append(str(int(locs[i])))
+            
+    plt.yticks(newlocs, newlabels)
             
     if gauss:
         values = []
