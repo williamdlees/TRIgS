@@ -8,9 +8,9 @@ PlotGermline requires [NumPy](http://www.numpy.org) and [matplotlib](http://matp
 
 ## Usage ##
 
-    usage: PlotGermline.py [-h] [-a] [-b BARCOLOUR] [-c COLS] [-d DUPHEADER] [-f]
+    usage: PlotGermline.py [-h] [-a] [-b BARCOLOUR] [-c COLS] [-co] [-d DUPHEADER] [-f]
                            [-g] [-gh] [-gv GRID_VERTICAL] [-l LIMIT] [-s SAVE]
-                           [-t TITLES] [-w WIDTH] [-y YMAX]
+                           [-sz X,Y] [-t TITLES] [-w WIDTH] [-y YMAX]
                            infiles field detail
 
 Argument|Meaning
@@ -21,6 +21,7 @@ Argument|Meaning
 `[-a]`|Sort genes alphabetically in the plot (default is by decreasing usage)
 `[-b BARCOLOUR]`|Colours to use for plots (one or more colours, separated by commas). If there are more plots than colours, the colours will repeat in a cycle.
 `[-c COLS]`|Number of plots to place on each row of the output (default 1)
+`[-co]`|Consolidate statistics into a single plot or table
 `[-d DUPHEADER]`|Prefix of the duplicate count in the Sequence ID, e.g. 'DUPCOUNT='
 `[-f]`|Use frequency on the y-axis rather than number of reads
 `[-g]`|Fill bars with a gradiented colour (as in the example above)
@@ -28,6 +29,7 @@ Argument|Meaning
 `[-gv GRID_VERTICAL]`|Show vertical grid lines after every GRID_VERTICAL number of bars
 `[-l LIMIT]`|Limit to the specified number of most frequently used genes
 `[-s SAVE]`|Save the plot to the specified file, otherwise display it interactively
+`[-sz X,Y]`|Set the total figure size to X by Y inches (note that the smaller the overall figure is, the larger the text is with respect to the plot, which gives some control over font size)
 `[-t TITLES]`|Comma-separated list of titles to use for plots (if there are fewer titles than plots, the titles will repeat in cycle)
 `[-w WIDTH]`|Column width, between 0 and 1 (0.8 in the above example)
 `[-y YMAX]`|Max y-value to use on all plots
