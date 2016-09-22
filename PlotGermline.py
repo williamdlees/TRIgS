@@ -36,7 +36,7 @@ def main(argv):
     parser.add_argument('-a', '--alpha_sort', help='sort columns alphabetically (default is by decreasing size)', action='store_true')    
     parser.add_argument('-b', '--barcolour', help='colour or list of colours for bars')
     parser.add_argument('-c', '--cols', help='Number of columns for plot')
-    parser.add_argument('-co', '--cons', help='Consolidate stats into a single table (csv output only)', action='store_true')
+    parser.add_argument('-co', '--cons', help='Consolidate plots into a single chart or table', action='store_true')
     parser.add_argument('-d', '--dupheader', help='Prefix for duplicate count, eg "DUPCOUNT=" for Presto')
     parser.add_argument('-f', '--frequency', help='Express chart in terms of frequency rather than number of reads', action='store_true')    
     parser.add_argument('-g', '--gradientfill', help='fill bars with a gradiented colour', action='store_true')    
