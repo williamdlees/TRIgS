@@ -47,11 +47,11 @@ The following tools will work on tab- or comma- separated files such as those pr
 
 [**PlotGermline**](docs/PlotGermline.md) creates histograms showing germline usage. 
 
-<img src="https://rawgit.com/williamdlees/BioTools/master/docs/germline.png" width="500">
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/kappa_v-gene_usage.png" width="800">
 
 [**Spectratype**](docs/Spectratype.md) creates histograms showing CDR3 length distribution.
 
-<img src="https://rawgit.com/williamdlees/BioTools/master/docs/spectra_1.png" width="500">
+<img src="https://rawgit.com/williamdlees/BioTools/master/docs/heavy_CDR3_length.png" width="500">
 
 [**AbIdentity**](docs/AbIdentity.md) calculates sequence identities compared to a target sequence and a germline.
 
