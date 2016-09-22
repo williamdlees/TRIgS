@@ -25,10 +25,6 @@ import argparse
 from Bio import SeqIO
 import Levenshtein as ld
 import re
-import igraph
-import subprocess
-import os
-import time
 import csv
 
 
