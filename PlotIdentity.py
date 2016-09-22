@@ -102,7 +102,7 @@ def main(argv):
     
     if args.bar:
         cb = plt.colorbar(im, shrink=0.8, extend='neither')
-        cb.ax.set_ylabel('sequencees', rotation=90)
+        cb.ax.set_ylabel('sequences', rotation=90)
 
     texts = []
     
