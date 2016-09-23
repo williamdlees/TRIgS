@@ -131,7 +131,7 @@ def main(argv):
             else:
                 writer.writerow(['Germline'] + all_germlines_required)                    
                 for (heights, title) in zip(fullheightlist, itertools.cycle(titles)):
-                    writer.writerow([title] + all_heights)
+                    writer.writerow([title] + heights)
 
 
 def plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical):
