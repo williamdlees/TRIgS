@@ -34,12 +34,12 @@ def main(argv):
     parser.add_argument('-e', '--exc', help='copy records that do not match instead of those that do', action='store_true')
     args = parser.parse_args()
     
-    pattern = re.compile(args.pattern)
+    pattern = re.compile(args.pattern.upper())
 
     recs = []
     for rec in SeqIO.parse(args.infile, "fasta"):
         if args.seq:
-            match = re.match(pattern, str(rec.seq))
+            match = re.match(pattern, str(rec.seq).upper())
         else:
             match = re.match(pattern, rec.id)
         if (match and not args.exc) or (args.exc and not match):
