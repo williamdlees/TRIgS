@@ -75,9 +75,15 @@ def main(argv):
     if not outfile or len(outfile) < 5 or outfile[-4:] != '.csv':
         plt.figure(figsize=(float(sizex),float(sizey)))
         plot_number = 1
+        plotted = False
         for (length, title, colour) in zip(lengths, itertools.cycle(titles), itertools.cycle(mapcolour)):
-            plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical, gauss)
-            plot_number += 1
+            if length is not None:
+                plot_file(length, xmin, xmax, ymax, title, nrows, ncols, plot_number, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical, gauss)
+                plot_number += 1
+                plotted = True
+        if not plotted:
+            quit()
+
         plt.tight_layout()
         if outfile:
             plt.savefig(outfile)
@@ -87,15 +93,17 @@ def main(argv):
         minlength = 9999
         maxlength = 0
         for length in lengths:
-            maxlength = max(maxlength, max([i for i in range(len(length)) if length[i] > 0]))
-            minlength = min(minlength, min([i for i in range(len(length)) if length[i] > 0]))
+            if length is not None:
+                maxlength = max(maxlength, max([i for i in range(len(length)) if length[i] > 0]))
+                minlength = min(minlength, min([i for i in range(len(length)) if length[i] > 0]))
 
         with open(outfile, 'wb') as fo:
             writer = csv.writer(fo)
             writer.writerow(['Length'] + range(minlength, maxlength))
             ititle = iter(titles) if titles else iter(infiles)
             for length in lengths:
-                writer.writerow([next(ititle)] + list(length[minlength:maxlength]))
+                if length is not None:
+                    writer.writerow([next(ititle)] + list(length[minlength:maxlength]))
 
 
 def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapcolour, bar_width, gradientfill, grid_horizontal, grid_vertical, gauss):
@@ -226,11 +234,25 @@ def determine_stats(dupheader, infile, unique):
         fi.seek(0)
         reader = csv.DictReader(fi, delimiter=sep)
         lengths = np.zeros(600)
+        first_row = True
+        seen_data = False
         for row in reader:
+            if first_row:
+                for f in ('Functionality', 'CDR3-IMGT', 'Sequence ID'):
+                    if f not in row:
+                        print 'Error: required field %s not in %s.' % (f, infile)
+                        quit()
+                first_row = False
             if 'unproductive' not in row['Functionality'] and row['CDR3-IMGT'] and (
                 not unique or row['CDR3-IMGT'] not in seen):
                 lengths[len(row['CDR3-IMGT'])] += (get_size(row['Sequence ID'], dupheader) if dupheader else 1)
                 seen[row['CDR3-IMGT']] = 1
+                seen_data = True
+
+    if not seen_data:
+        print 'Warning: no functional CDR3 records found in file %s.' % infile
+        return None
+
     return lengths
 
 
