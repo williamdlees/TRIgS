@@ -148,7 +148,7 @@ def plot_file(lengths, xmin, xmax, ymax, title, nrows, ncols, plot_number, mapco
     if gradientfill:
         gbar(bar_pos, lengths, mapcolour, width=bar_width)
     else:
-        plt.bar(bar_pos, lengths, width=bar_width, color=mapcolour, zorder=10)
+        plt.bar(bar_pos, lengths[:xmax+1], width=bar_width, color=mapcolour, zorder=10)
 
     if grid_vertical:
         pos = 0
