@@ -77,8 +77,17 @@ def main(argv):
     dupheader = args.dupheader
 
     stats = []
+    found_records = False
     for infile in infiles:
-        stats.append(determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, limit))
+        (heights, legends) = determine_stats(alpha_sort, detail, dupheader, field, frequency, infile, limit)
+        if len(heights) > 0:
+            found_records = True
+        else:
+            print 'No records matching the criteria were found in %s.' % infile
+        stats.append([heights, legends])
+
+    if not found_records:
+        quit()
 
     if consolidate:
         fullstats = []
@@ -90,6 +99,8 @@ def main(argv):
             for legend in legends:
                 if legend not in all_germlines_required:
                     all_germlines_required.append(legend)
+        if len(all_germlines_required) < 1:
+            quit()                          # nothing to plot
         all_germlines_required.sort()
         fullheightlist = []
         for (fullstat, title) in zip(fullstats, itertools.cycle(titles)):
@@ -108,7 +119,8 @@ def main(argv):
             plot_number = 1
             for (stat, title, colour) in zip(stats, itertools.cycle(titles), itertools.cycle(mapcolour)):
                 (heights, legends) = stat
-                plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
+                if len(heights) > 1:
+                    plot_file(heights, legends, frequency, ymax, nrows, ncols, plot_number, title, colour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
                 plot_number += 1
         else:
             plot_multi(fullheightlist, all_germlines_required, frequency, ymax, titles, mapcolour, bar_width, args.gradientfill, args.grid_horizontal, grid_vertical)
