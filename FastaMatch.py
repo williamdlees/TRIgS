@@ -33,8 +33,11 @@ def main(argv):
     parser.add_argument('-s', '--seq', help='copy records whose sequences match (default is to match the header)', action='store_true')
     parser.add_argument('-e', '--exc', help='copy records that do not match instead of those that do', action='store_true')
     args = parser.parse_args()
-    
-    pattern = re.compile(args.pattern.upper())
+
+    if args.seq:
+        pattern = re.compile(args.pattern.upper())
+    else:
+        pattern = re.compile(args.pattern)
 
     recs = []
     for rec in SeqIO.parse(args.infile, "fasta"):
