@@ -34,6 +34,11 @@ This is a collection of small utilities that have proved useful in RepSeq analyt
       -s, --seq   copy records whose sequences match (default is to match the
                   header)
       -e, --exc   copy records that do not match instead of those that do
+      
+    Notes
+    
+    'pattern' must be a regular expression pattern that matches the entire header (or sequence)
+    As an example, '.*FAIL.*' will match any that contain the string FAIL.
 
 ## FastaSample
 
