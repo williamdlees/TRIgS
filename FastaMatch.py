@@ -44,7 +44,7 @@ def main(argv):
         if args.seq:
             match = re.match(pattern, str(rec.seq).upper())
         else:
-            match = re.match(pattern, rec.id)
+            match = re.match(pattern, rec.description)
         if (match and not args.exc) or (args.exc and not match):
             recs.append(rec)
             
