@@ -78,6 +78,8 @@ def main():
 
                 if 'Sequence ID' in reader.fieldnames:
                     idfield = 'Sequence ID'
+                elif 'SEQUENCE_ID' in reader.fieldnames:
+                    idfield = 'SEQUENCE_ID'
                 else:
                     print 'Using the first field, %s, as the Sequence ID' % reader.fieldnames[0]
                     idfield = reader.fieldnames[0]
