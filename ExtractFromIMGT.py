@@ -48,6 +48,7 @@ def main():
     dgermline = args.dgermline
     chaintype = args.chaintype
     wanted_fields = args.required_fields.split('+')
+    idfield = ''
     
     firstline = True
     with open(args.analysis_file, 'r') as fi, open(args.outfile, 'wb') as fo:
@@ -72,6 +73,14 @@ def main():
                     print "Error: specific j-gene requested, but 'J-GENE and allele' field is not included in the analysis file."                    
                 if errors:
                     exit(1)
+
+                # check we can identify the ID field
+
+                if 'Sequence ID' in reader.fieldnames:
+                    idfield = 'Sequence ID'
+                else:
+                    print 'Using the first field, %s, as the Sequence ID' % reader.fieldnames[0]
+                    idfield = reader.fieldnames[0]
                     
                 firstline = False
 
@@ -116,7 +125,7 @@ def main():
                 if chaintype != g:
                     continue
                     
-            if args.productive and 'unproductive' in row['Functionality'] or 'productive' not in row['Functionality']:
+            if args.productive and ('unproductive' in row['Functionality'] or 'productive' not in row['Functionality']):
                 continue
                     
             include_row = True
@@ -161,7 +170,7 @@ def main():
                     include_row = False
                 
             if include_row:
-                SeqIO.write(SeqRecord(Seq(seq), id=row['Sequence ID'], description = ''), fo, 'fasta')
+                SeqIO.write(SeqRecord(Seq(seq), id=row[idfield], description = ''), fo, 'fasta')
 
 if __name__ == '__main__':
     main()
